@@ -75,6 +75,11 @@ public class MainActivity
                 "Title 4",
                 ChildItemList());
         itemList.add(item3);
+        ParentItem item5
+                = new ParentItem(
+                "Title 5",
+                ChildItemList());
+        itemList.add(item5);
 
         return itemList;
     }
@@ -91,6 +96,7 @@ public class MainActivity
         ChildItemList.add(new ChildItem("Card 2"));
         ChildItemList.add(new ChildItem("Card 3"));
         ChildItemList.add(new ChildItem("Card 4"));
+        ChildItemList.add(new ChildItem("Card 5"));
 
         return ChildItemList;
     }

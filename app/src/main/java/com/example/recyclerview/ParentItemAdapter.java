@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ParentItemAdapter
-        extends RecyclerView
-        .Adapter<ParentItemAdapter.ParentViewHolder> {
+public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder> {
 
     // An object of RecyclerView.RecycledViewPool
     // is created to share the Views

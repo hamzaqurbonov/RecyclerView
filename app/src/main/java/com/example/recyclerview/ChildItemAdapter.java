@@ -2,18 +2,30 @@ package com.example.recyclerview;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-public class ChildItemAdapter
-        extends RecyclerView
-        .Adapter<ChildItemAdapter.ChildViewHolder> {
+import java.util.List;
+import java.util.Random;
+
+public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
 
     private List<ChildItem> ChildItemList;
+
+    public static final String[] my = {"4UbhF0uNpaM", "e_FWd4O9VY4", "mkZ3GXZoQtQ","pIj9XzDlJHU","hS1LNpuhslI","ZvLt_S4GzpY","X3tr5ax78V4", "k_an7b4r1_Q", "sOxloXyOAKA", "N-WDm0-R8YQ",};
+    public static final Random random = new Random();
+    public static String getNextVideoId() {
+
+        return my[random.nextInt(my.length)];
+    }
 
     // Constructor
     ChildItemAdapter(List<ChildItem> childItemList)
@@ -40,24 +52,41 @@ public class ChildItemAdapter
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull ChildViewHolder childViewHolder,
-            int position)
-    {
+    public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position){
 
         // Create an instance of the ChildItem
         // class for the given position
-        ChildItem childItem
-                = ChildItemList.get(position);
+        ChildItem childItem = ChildItemList.get(position);
 
         // For the created instance, set title.
         // No need to set the image for
         // the ImageViews because we have
         // provided the source for the images
         // in the layout file itself
-        childViewHolder
-                .ChildItemTitle
-                .setText(childItem.getChildItemTitle());
+        childViewHolder.ChildItemTitle.setText(childItem.getChildItemTitle());
+        childViewHolder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
+
+                String videoId = getNextVideoId();
+                youTubePlayer.cueVideo(videoId, 0);
+//                Log.d("demo20", String.valueOf(1));
+//
+            }
+
+        });
+
+//        childViewHolder.ChildItemTitle.findViewById()addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+//            @Override
+//            public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
+//
+//                String videoId = "hS1LNpuhslI";
+//                youTubePlayer.loadVideo(videoId, 0);
+////                Log.d("demo20", String.valueOf(1));
+////
+//            }
+//
+//        });
     }
 
     @Override
@@ -76,17 +105,18 @@ public class ChildItemAdapter
     // This class is to initialize
     // the Views present
     // in the child RecyclerView
-    class ChildViewHolder
-            extends RecyclerView.ViewHolder {
+    class ChildViewHolder extends RecyclerView.ViewHolder {
 
         TextView ChildItemTitle;
+
+        YouTubePlayerView youTubePlayerView;
 
         ChildViewHolder(View itemView)
         {
             super(itemView);
-            ChildItemTitle
-                    = itemView.findViewById(
-                    R.id.child_item_title);
+            ChildItemTitle  = itemView.findViewById(R.id.child_item_title);
+            youTubePlayerView  = itemView.findViewById(R.id.youtube_player_view);
+
         }
     }
 }

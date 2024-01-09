@@ -11,14 +11,14 @@
         android:id="@+id/parent_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12sp"
+        android:padding="8sp"
         android:textSize="18sp"
         />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <!--Child RecyclerView-->
