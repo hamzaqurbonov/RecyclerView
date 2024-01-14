@@ -12,7 +12,14 @@
         android:layout_margin="12dp">
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/slect_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+/>
 
             <!--Image in the CardView-->
             <!--Here we have already given
@@ -21,14 +28,14 @@
                 in the Java code-->
             <!--So all the ImageViews will
                 hold the same image-->
-            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                android:id="@+id/youtube_player_view"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+<!--            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView-->
+<!--                android:id="@+id/youtube_player_view"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
 
-                app:enableAutomaticInitialization="true"
+<!--                app:enableAutomaticInitialization="true"-->
 
-                />
+<!--                />-->
 
 
 <!--            <ImageView-->
@@ -42,9 +49,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:layout_toEndOf="@id/youtube_player_view"
+                android:layout_toEndOf="@id/slect_button"
                 android:padding="12dp"
-                android:layout_below="@+id/youtube_player_view"
+                android:layout_below="@+id/slect_button"
                 android:layout_alignParentStart="true"
                 android:orientation="vertical">
 

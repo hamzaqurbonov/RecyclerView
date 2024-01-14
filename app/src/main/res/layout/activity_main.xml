@@ -12,12 +12,12 @@
         android:id="@+id/youtube_player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:enableAutomaticInitialization="false"
 
-        app:autoPlay="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:videoId="ZvLt_S4GzpY" />
+         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/parent_recyclerview"

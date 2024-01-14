@@ -9,6 +9,7 @@ public class ChildItem {
     // to initialize the variable*
     public ChildItem(String childItemTitle)
     {
+
         this.ChildItemTitle = childItemTitle;
     }
 

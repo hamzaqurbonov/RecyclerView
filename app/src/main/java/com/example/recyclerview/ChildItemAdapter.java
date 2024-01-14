@@ -13,6 +13,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -20,16 +23,30 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
 
     private List<ChildItem> ChildItemList;
 
+//    static ArrayList<String> mylist = new ArrayList<String>();
+
     public static final String[] my = {"4UbhF0uNpaM", "e_FWd4O9VY4", "mkZ3GXZoQtQ","pIj9XzDlJHU","hS1LNpuhslI","ZvLt_S4GzpY","X3tr5ax78V4", "k_an7b4r1_Q", "sOxloXyOAKA", "N-WDm0-R8YQ",};
+
+
     public static final Random random = new Random();
+
+
     public static String getNextVideoId() {
+
+//        Log.d("demo21", String.valueOf(mylist));
+//        Collections.shuffle(mylist);
+//        Log.d("demo21", String.valueOf(mylist));
 
         return my[random.nextInt(my.length)];
     }
 
+
+
     // Constructor
     ChildItemAdapter(List<ChildItem> childItemList)
     {
+
+
         this.ChildItemList = childItemList;
     }
 
@@ -39,6 +56,9 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
             @NonNull ViewGroup viewGroup,
             int i)
     {
+
+
+
 
         // Here we inflate the corresponding
         // layout of the child item
@@ -50,6 +70,8 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
 
         return new ChildViewHolder(view);
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position){
@@ -64,29 +86,25 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
         // provided the source for the images
         // in the layout file itself
         childViewHolder.ChildItemTitle.setText(childItem.getChildItemTitle());
-        childViewHolder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
-
-                String videoId = getNextVideoId();
-                youTubePlayer.cueVideo(videoId, 0);
-//                Log.d("demo20", String.valueOf(1));
-//
-            }
-
-        });
-
-//        childViewHolder.ChildItemTitle.findViewById()addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+//        childViewHolder.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
 //            @Override
 //            public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
 //
-//                String videoId = "hS1LNpuhslI";
-//                youTubePlayer.loadVideo(videoId, 0);
-////                Log.d("demo20", String.valueOf(1));
+//                String videoId = getNextVideoId();
+//
+//                youTubePlayer.cueVideo(videoId, 0);
+//
+//
+////                Log.d("demo20", getNextVideoId());
+////                Collections.shuffle(mylist);
+////                Log.d("demo21", String.valueOf(mylist));
+//
 ////
 //            }
-//
+
 //        });
+
+//
     }
 
     @Override
@@ -115,7 +133,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
         {
             super(itemView);
             ChildItemTitle  = itemView.findViewById(R.id.child_item_title);
-            youTubePlayerView  = itemView.findViewById(R.id.youtube_player_view);
+//            youTubePlayerView  = itemView.findViewById(R.id.youtube_player_view);
 
         }
     }
