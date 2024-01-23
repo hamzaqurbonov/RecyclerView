@@ -1,23 +1,14 @@
 package com.example.recyclerview;
 
-public class Member  {
-
+public class Model {
 
     String firstName;
+
     String lastName;
 
-    public Member(String firstName, String lastName) {
+    public Model(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -29,11 +20,13 @@ public class Member  {
     }
 
 
+    public String getFirstName() {
+        return firstName;
+    }
 
-
-
-
-
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
 
 }

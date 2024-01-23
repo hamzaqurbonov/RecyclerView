@@ -15,25 +15,25 @@ import java.util.List;
 public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<java.lang.reflect.Member> members;
+    private List<Model> modellist;
 
-    public CustomAdapter (Context context, List<java.lang.reflect.Member> members) {
+
+    public CustomAdapter(Context context, List<Model> modellist) {
         this.context=context;
-        this.members=members;
+        this.modellist=modellist;
     }
-
 
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_layout, parent, false);
-        return new CustomViewHolder(view) ;
+        return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Member member = (Member) members.get(position);
+        Model member = modellist.get(position);
 
         if(holder instanceof CustomViewHolder){
             TextView fist_name = ((CustomViewHolder) holder).first_name;
@@ -45,11 +45,9 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-
-
     @Override
     public int getItemCount() {
-        return members.size();
+        return modellist.size();
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{

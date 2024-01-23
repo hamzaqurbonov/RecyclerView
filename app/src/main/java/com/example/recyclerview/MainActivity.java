@@ -29,6 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private Context context;
     private RecyclerView recyclerView;
 
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
-        List<Member> members = prepareMemerList();
-        refreshAdapter(members);
+        List<Model> modellist = prepareMemerList();
+        refreshAdapter(modellist);
 
 
     }
@@ -49,22 +50,23 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         context = this;
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
 
     }
 
-    private void refreshAdapter (List<Member>members) {
-        CustomAdapter adapter = new CustomAdapter(context, members);
+    private void refreshAdapter (List<Model>modellist) {
+        CustomAdapter adapter = new CustomAdapter(context, modellist);
         recyclerView.setAdapter(adapter);
     }
 
 
-    private List<Member> prepareMemerList() {
-        List<Member> members = new ArrayList<>();
+    private List<Model> prepareMemerList() {
+        List<Model> modellist = new ArrayList<>();
         for (int i = 0; i<30; i++) {
-            members.add((Member) new com.example.recyclerview.Member("Kurbanov" + i, "Hamza" + i));
+            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
+
         }
-        return members;
+        return modellist;
     }
 
 
