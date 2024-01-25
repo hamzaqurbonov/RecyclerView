@@ -31,10 +31,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     YouTubePlayerView youTubePlayerView;
+    List<Model> modellist = new ArrayList<>();
 
     private Context context;
     private RecyclerView recyclerView;
-
+    private CustomAdapter.RecyclerViewClickListner listner;
+    Button playNextVideoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,23 +65,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshAdapter (List<Model>modellist) {
-        CustomAdapter adapter = new CustomAdapter(this, modellist);
+        setOnClickListner();
+        CustomAdapter adapter = new CustomAdapter(this, modellist,listner);
         recyclerView.setAdapter(adapter);
     }
 
-    public void openItem(Model modellist) {
+    private void setOnClickListner() {
+//        Log.d("demo15", );
+        listner = new CustomAdapter.RecyclerViewClickListner() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+                startActivity(intent);
+            }
+
+        };
+
+    }
+
+    public void openItem(Model b) {
+
+
+
+
+
+
 //        Intent i = new Intent(MainActivity.this,MainActivity2.class);
 //        startActivity(i);
-        Log.d("demo15", modellist.getFirstName());
+//        initYouTubePlayerView();
+        Log.d("demo15", b.getFirstName());
+        Log.d("demo15", b.getLastName());
     }
 
 
     private List<Model> prepareMemerList() {
-        List<Model> modellist = new ArrayList<>();
-        for (int i = 0; i<=5; i++) {
-            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
 
-        }
+        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
+        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
+        modellist.add(new Model("Kurbanov", "k_an7b4r1_Q"));
+
+//        for (int i = 0; i<=5; i++) {
+//            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
+//
+//        }
         return modellist;
     }
 
