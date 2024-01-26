@@ -30,17 +30,20 @@ public class MainActivity2 extends AppCompatActivity {
 
           nameTextView = findViewById(R.id.nameTextView);
 
-          String usersmane = "Users not set";
+//          String usersmane = "Users not set";
+//
+//
+//          Bundle extras = getIntent().getExtras();
+//          if (extras != null) {
+//              usersmane = extras.getString("Kurbanov")       ;
+//          }
+//
+//          nameTextView.setText(usersmane);
 
 
-          Bundle extras = getIntent().getExtras();
-          if (extras != null) {
-              usersmane = extras.getString("Kurbanov")       ;
-          }
+        nameTextView.setText(getIntent().getExtras().getString("Kurbanov"));
 
-          nameTextView.setText(usersmane);
-
-        Log.d("demo17", String.valueOf(usersmane));
+//        Log.d("demo17", String.valueOf(usersmane));
 
 
 
@@ -76,7 +79,7 @@ public class MainActivity2 extends AppCompatActivity {
 //                setPlayNextVideoButtonClickListener(youTubePlayer);
                 YouTubePlayerUtils.loadOrCueVideo(
                         youTubePlayer, getLifecycle(),
-                        "",
+                        setText(getIntent().getExtras().getString("Kurbanov")),
                         0f
                 );
 //                Log.d("demo17", getSetText().toString());
@@ -85,5 +88,9 @@ public class MainActivity2 extends AppCompatActivity {
         // disable web ui
         IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
         youTubePlayerView.initialize(listener, options);
+    }
+
+    private String setText(String kurbanov) {
+        return kurbanov;
     }
 }
