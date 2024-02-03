@@ -1,6 +1,6 @@
 package com.example.recyclerview;
 
-public class Model {
+    public class Model {
 
     String firstName;
 

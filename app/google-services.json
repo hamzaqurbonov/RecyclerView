@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "461867832807",
+    "project_id": "recyclerview-682ca",
+    "storage_bucket": "recyclerview-682ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461867832807:android:b7cfe6524a0dd828d49942",
+        "android_client_info": {
+          "package_name": "com.example.recyclerview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3P4YgdjiX9dVQuIuYJ3FdAABoTEeMDSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

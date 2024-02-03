@@ -27,7 +27,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public List<Model> modellist;
 
 
-    public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
+        public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
 //        this.context=context;
         this.modellist=modellist;
         this.activity=activity;
@@ -84,7 +84,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return modellist.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public View view;
         private LinearLayout lay_click;
         YouTubePlayerView youTubePlayerView;
@@ -102,14 +102,14 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @Override
         public void onClick(View v) {
-            listner.onClick(view, getAdapterPosition());
+                listner.onClick(view, getAdapterPosition());
         }
     }
 
 
-    public interface RecyclerViewClickListner {
-        void onClick(View v, int position);
-    }
+        public interface RecyclerViewClickListner {
+            void onClick(View v, int position);
+        }
 //    public class MyViewHolder extends RecyclerView.ViewHolder {
 //        private TextView nameTxt;
 //        public MyViewHolder(@NonNull View itemView) {

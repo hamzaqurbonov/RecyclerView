@@ -18,6 +18,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
@@ -49,20 +56,25 @@ public class MainActivity extends AppCompatActivity {
 //        getLifecycle().addObserver(youTubePlayerView);
 //        initYouTubePlayerView();
 
-        initViews();
-        List<Model> modellist = prepareMemerList();
-        refreshAdapter(modellist);
+            initViews();
+            List<Model> modellist = prepareMemerList();
+            refreshAdapter(modellist);
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
 
+        myRef.setValue("Hello, World!");
+
+        getData();
     }
 
 
-    private void initViews() {
-        context = this;
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
+        private void initViews() {
+            context = this;
+            recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
 
-    }
+        }
 
     private void refreshAdapter (List<Model>modellist) {
         setOnClickListner();
@@ -84,19 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void openItem(Model b) {
-
-
-
-
-
-
-//        Intent i = new Intent(MainActivity.this,MainActivity2.class);
-//        startActivity(i);
-//        initYouTubePlayerView();
-        Log.d("demo15", b.getFirstName());
-        Log.d("demo15", b.getLastName());
-    }
+//
 
 
     private List<Model> prepareMemerList() {
@@ -111,6 +111,29 @@ public class MainActivity extends AppCompatActivity {
 //        }
         return modellist;
     }
+
+
+    private void getData() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("main")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d("demo21", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d("demo21", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+
 
 
 
@@ -144,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setPlayNextVideoButtonClickListener(final YouTubePlayer youTubePlayer) {
 
-        Button playNextVideoButton = findViewById(R.id.button);
+//        Button playNextVideoButton = findViewById(R.id.button);
 
 
         playNextVideoButton.setOnClickListener(view ->
