@@ -13,15 +13,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,9 +40,15 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference noteDB = db.document("main/short");
+    private static final String KEY_TITLE = "shortObj";
     YouTubePlayerView youTubePlayerView;
     List<Model> modellist = new ArrayList<>();
 
@@ -44,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CustomAdapter.RecyclerViewClickListner listner;
     Button playNextVideoButton;
+    TextView dbText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         youTubePlayerView = findViewById(R.id.youtube_player_view);
+        dbText = findViewById(R.id.db_text);
 
 //        getLifecycle().addObserver(youTubePlayerView);
 //        initYouTubePlayerView();
@@ -60,12 +75,11 @@ public class MainActivity extends AppCompatActivity {
             List<Model> modellist = prepareMemerList();
             refreshAdapter(modellist);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//        myRef.setValue("Hello, World!");
 
-        myRef.setValue("Hello, World!");
-
-        getData();
+//        getData();
     }
 
 
@@ -113,74 +127,106 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getData() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("main")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Log.d("demo21", document.getId() + " => " + document.getData());
-                            }
-                        } else {
-//                            Log.w(TAG, "Error getting documents.", task.getException());
-                            Log.d("demo21", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
+//    public void saveNote (View v) {
+//        String title = dbText.getText().toString();//
+//        Map<String, Object> note = new HashMap<>();
+//        note.put(KEY_TITLE, title);
+//        noteDB.set(note).addOnSuccessListener((OnSuccessListener) (aVoid) {
+//                Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
+//        })
+//  }
 
-
-
-
-
-    public void initYouTubePlayerView() {
-        getLifecycle().addObserver(youTubePlayerView);
-//        View customPlayerUi = youTubePlayerView.inflateCustomPlayerUi(R.layout.layout_panel);
-
-        YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
+    public void loadDB (View v) {
+        noteDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-
-//                CustomPlayerUiController customPlayerUiController = new CustomPlayerUiController(requireContext(), customPlayerUi, youTubePlayer, youTubePlayerView);
-//                youTubePlayer.addListener(customPlayerUiController);
-                setPlayNextVideoButtonClickListener(youTubePlayer);
-                YouTubePlayerUtils.loadOrCueVideo(
-                        youTubePlayer, getLifecycle(),
-                       "HXrETVPKWh0",
-                        0f
-                );
-//                Log.d("demo21", "1");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String title = documentSnapshot.getString(KEY_TITLE);
+                    dbText.setText("URL: " + title);
+                } else {
+                    Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
+                }
             }
-        };
-        // disable web ui
-        IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
-        youTubePlayerView.initialize(listener, options);
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
+
+
+
+
+//    private void getData() {
+//        FirebaseFirestore db  = FirebaseFirestore.getInstance();
+//        db.collection("main")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                dbText.setText(document.getId() + document.getData());
+////                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                Log.d("demo21", document.getId() + " => " + document.getData());
+//                            }
+//                        } else {
+////                            Log.w(TAG, "Error getting documents.", task.getException());
+//                            Log.d("demo21", "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 
 
 
 //
-
-    private void setPlayNextVideoButtonClickListener(final YouTubePlayer youTubePlayer) {
-
-//        Button playNextVideoButton = findViewById(R.id.button);
-
-
-        playNextVideoButton.setOnClickListener(view ->
-
-                YouTubePlayerUtils.loadOrCueVideo(
-                        youTubePlayer,
-                        getLifecycle(),
-                        "vBxNDtyE_Co",
-                        0f
-
-                )
-
-        );
-        Log.d("demo21", "2");
-    }
+//
+//    public void initYouTubePlayerView() {
+//        getLifecycle().addObserver(youTubePlayerView);
+////        View customPlayerUi = youTubePlayerView.inflateCustomPlayerUi(R.layout.layout_panel);
+//
+//        YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
+//            @Override
+//            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+//
+////                CustomPlayerUiController customPlayerUiController = new CustomPlayerUiController(requireContext(), customPlayerUi, youTubePlayer, youTubePlayerView);
+////                youTubePlayer.addListener(customPlayerUiController);
+//                setPlayNextVideoButtonClickListener(youTubePlayer);
+//                YouTubePlayerUtils.loadOrCueVideo(
+//                        youTubePlayer, getLifecycle(),
+//                       "HXrETVPKWh0",
+//                        0f
+//                );
+////                Log.d("demo21", "1");
+//            }
+//        };
+//        // disable web ui
+//        IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
+//        youTubePlayerView.initialize(listener, options);
+//    }
+//
+//
+//
+////
+//
+//    private void setPlayNextVideoButtonClickListener(final YouTubePlayer youTubePlayer) {
+//
+////        Button playNextVideoButton = findViewById(R.id.button);
+//
+//
+//        playNextVideoButton.setOnClickListener(view ->
+//
+//                YouTubePlayerUtils.loadOrCueVideo(
+//                        youTubePlayer,
+//                        getLifecycle(),
+//                        "vBxNDtyE_Co",
+//                        0f
+//
+//                )
+//
+//        );
+//        Log.d("demo21", "2");
+//    }
 }
