@@ -12,111 +12,160 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.List;
 
-public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private MainActivity activity;
-    private RecyclerViewClickListner listner;
-
-//    private Context context;
-    public List<Model> modellist;
 
 
-        public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
-//        this.context=context;
-        this.modellist=modellist;
-        this.activity=activity;
-        this.listner=listner;
+public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteHolder> {
+
+    public NoteAdapter(@NonNull FirestoreRecyclerOptions<NoteModel> options) {
+        super(options);
     }
 
+    @Override
+    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel model) {
+        holder.textViewTitle.setText(model.getTitle());
+        holder.textViewDescription.setText(model.getDescription());
+        holder.textViewPriority.setText(String.valueOf(model.getPriority()));
+    }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_layout, parent, false);
-        return new CustomViewHolder(view);
+    public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_layout,
+                parent, false);
+        return new NoteHolder(v);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Model member = modellist.get(position);
+    class NoteHolder extends RecyclerView.ViewHolder {
+        TextView textViewTitle;
+        TextView textViewDescription;
+        TextView textViewPriority;
 
-        if(holder instanceof CustomViewHolder){
-            LinearLayout lay_click = ((CustomViewHolder) holder).lay_click;
-            TextView fist_name = ((CustomViewHolder) holder).first_name;
-            TextView last_name = ((CustomViewHolder) holder).last_name;
+        public NoteHolder(View itemView) {
+            super(itemView);
+            textViewTitle = itemView.findViewById(R.id.text_view_title);
+            textViewDescription = itemView.findViewById(R.id.text_view_description);
+            textViewPriority = itemView.findViewById(R.id.text_view_priority);
+        }
+    }
+}
 
-            fist_name.setText(member.getFirstName());
-            last_name.setText(member.getLastName());
 
-//            lay_click.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    activity.openItem(member);
-//                    activity.initYouTubePlayerView();
-//                    Intent intent = new Intent(v.getContext(), MainActivity2.class);
-//                    v.getContext().startActivity(intent);
 
-//                    ((CustomViewHolder) holder).youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-//                        @Override
-//                        public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
+//    private MainActivity activity;
+//    private RecyclerViewClickListner listner;
 //
-//                            String videoId = "HXrETVPKWh0";
-//                            youTubePlayer.cueVideo(videoId, 0);
-////                Log.d("demo20", String.valueOf(2));
+////    private Context context;
+//    public List<Model> modellist;
+//
+//
+//        public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
+////        this.context=context;
+//        this.modellist=modellist;
+//        this.activity=activity;
+//        this.listner=listner;
+//    }
+//
+//
+//    @NonNull
+//    @Override
+//    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_layout, parent, false);
+//        return new CustomViewHolder(view);
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+//        Model member = modellist.get(position);
+//
+//        if(holder instanceof CustomViewHolder){
+//            LinearLayout lay_click = ((CustomViewHolder) holder).lay_click;
+//            TextView fist_name = ((CustomViewHolder) holder).first_name;
+//            TextView last_name = ((CustomViewHolder) holder).last_name;
+//
+//            fist_name.setText(member.getFirstName());
+//            last_name.setText(member.getLastName());
+//
+////            lay_click.setOnClickListener(new View.OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    activity.openItem(member);
+////                    activity.initYouTubePlayerView();
+////                    Intent intent = new Intent(v.getContext(), MainActivity2.class);
+////                    v.getContext().startActivity(intent);
+//
+////                    ((CustomViewHolder) holder).youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+////                        @Override
+////                        public void onReady(@NonNull YouTubePlayer youTubePlayer)  {
 ////
-//                        }
+////                            String videoId = "HXrETVPKWh0";
+////                            youTubePlayer.cueVideo(videoId, 0);
+//////                Log.d("demo20", String.valueOf(2));
+//////
+////                        }
+////
+////                    });
+////                }
+////            });
+//        }
 //
-//                    });
-//                }
-//            });
-        }
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return modellist.size();
-    }
-
-        public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public View view;
-        private LinearLayout lay_click;
-        YouTubePlayerView youTubePlayerView;
-        public TextView first_name, last_name, nameTxt;
-        public CustomViewHolder(View v) {
-            super(v);
-            view = v;
-            lay_click = view.findViewById(R.id.lay_click);
-            first_name = view.findViewById(R.id.first_name);
-            last_name = view.findViewById(R.id.last_name);
-            youTubePlayerView = view.findViewById(R.id.youtube_player_view);
-//            nameTxt = view.findViewById(R.id.nameTextView);
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-                listner.onClick(view, getAdapterPosition());
-        }
-    }
-
-
-        public interface RecyclerViewClickListner {
-            void onClick(View v, int position);
-        }
-//    public class MyViewHolder extends RecyclerView.ViewHolder {
-//        private TextView nameTxt;
-//        public MyViewHolder(@NonNull View itemView) {
-//            super(itemView);
+//    }
 //
+//    @Override
+//    public int getItemCount() {
+//        return modellist.size();
+//    }
+//
+//        public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+//        public View view;
+//        private LinearLayout lay_click;
+//        YouTubePlayerView youTubePlayerView;
+//        public TextView first_name, last_name, nameTxt;
+//        public CustomViewHolder(View v) {
+//            super(v);
+//            view = v;
+//            lay_click = view.findViewById(R.id.lay_click);
+//            first_name = view.findViewById(R.id.first_name);
+//            last_name = view.findViewById(R.id.last_name);
+//            youTubePlayerView = view.findViewById(R.id.youtube_player_view);
+////            nameTxt = view.findViewById(R.id.nameTextView);
+//            view.setOnClickListener(this);
+//        }
+//
+//        @Override
+//        public void onClick(View v) {
+//                listner.onClick(view, getAdapterPosition());
 //        }
 //    }
+//
+//
+//        public interface RecyclerViewClickListner {
+//            void onClick(View v, int position);
+//        }
 
 
-}
+
+//}

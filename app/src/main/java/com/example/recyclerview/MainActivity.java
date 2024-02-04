@@ -3,6 +3,7 @@ package com.example.recyclerview;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.usage.NetworkStats;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +21,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,23 +44,30 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private NoteAdapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference noteDB = db.document("main/short");
-    private static final String KEY_TITLE = "shortObj";
-    YouTubePlayerView youTubePlayerView;
-    List<Model> modellist = new ArrayList<>();
 
-    private Context context;
-    private RecyclerView recyclerView;
-    private CustomAdapter.RecyclerViewClickListner listner;
-    Button playNextVideoButton;
+    private CollectionReference  notebookRef = db.collection("Notebook");
+    private static final String KEY_TITLE = "shortObj";
+
     TextView dbText;
+//    YouTubePlayerView youTubePlayerView;
+//    List<Model> modellist = new ArrayList<>();
+//
+//    private Context context;
+//    private RecyclerView recyclerView;
+//    private CustomAdapter.RecyclerViewClickListner listner;
+//    Button playNextVideoButton;
+//    TextView dbText;
+//    private CustomAdapter adapter;
 
 
     @Override
@@ -65,76 +76,130 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        youTubePlayerView = findViewById(R.id.youtube_player_view);
+//        youTubePlayerView = findViewById(R.id.youtube_player_view);
         dbText = findViewById(R.id.db_text);
 
 //        getLifecycle().addObserver(youTubePlayerView);
 //        initYouTubePlayerView();
 
-            initViews();
-            List<Model> modellist = prepareMemerList();
-            refreshAdapter(modellist);
+//            initViews();
+//            List<Model> modellist = prepareMemerList();
+//            refreshAdapter(modellist);
 
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World!");
 
 //        getData();
+
+        setUpRecyclerView();
     }
 
 
-        private void initViews() {
-            context = this;
-            recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
 
-        }
+    private void setUpRecyclerView() {
+//        Query query = notebookRef.orderBy("priority", Query.Direction.DESCENDING);
 
-    private void refreshAdapter (List<Model>modellist) {
-        setOnClickListner();
-        CustomAdapter adapter = new CustomAdapter(this, modellist,listner);
+
+
+        Query query = FirebaseFirestore.getInstance().collection("Notebook").orderBy("priority",);
+
+            FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
+                .setQuery(query, NoteModel.class)
+                .build();
+
+//        FirestoreRecyclerOptions<NoteModel> allfirestorerecycler= new FirestoreRecyclerOptions.Builder<NoteModel>()
+//            .setQuery(<Query>, query.NoteModel.class)
+//            .build();
+
+//        FirestoreRecyclerOptions<NoteModel.class> options = new FirestoreRecyclerOptions.Builder<NoteModel.class>()
+//                .setQuery(query, NoteModel.class)
+//                .build();
+
+        adapter = new NoteAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
-    private void setOnClickListner() {
-//        Log.d("demo15", );
-        listner = new CustomAdapter.RecyclerViewClickListner() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-                startActivity(intent);
-            }
-
-        };
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+
+
+
+
+
+
+
+
+
+
 //
-
-
-    private List<Model> prepareMemerList() {
-
-        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
-        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
-        modellist.add(new Model("Kurbanov", "k_an7b4r1_Q"));
-
-//        for (int i = 0; i<=5; i++) {
-//            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
+//
+//        private void initViews() {
+//            context = this;
+//            recyclerView = findViewById(R.id.recyclerView);
+//            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
 //
 //        }
-        return modellist;
-    }
+//
+//    private void refreshAdapter (List<Model>modellist) {
+//        setOnClickListner();
+//        CustomAdapter adapter = new CustomAdapter(this, modellist,listner);
+//        recyclerView.setAdapter(adapter);
+//    }
+//
+//    private void setOnClickListner() {
+////        Log.d("demo15", );
+//        listner = new CustomAdapter.RecyclerViewClickListner() {
+//            @Override
+//            public void onClick(View v, int position) {
+//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+//                startActivity(intent);
+//            }
+//
+//        };
+//
+//    }
+
+//
+
+//
+//    private List<Model> prepareMemerList() {
+//
+//        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
+//        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
+//        modellist.add(new Model("Kurbanov", "k_an7b4r1_Q"));
+//
+////        for (int i = 0; i<=5; i++) {
+////            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
+////
+////        }
+//        return modellist;
+//    }
 
 
-//    public void saveNote (View v) {
-//        String title = dbText.getText().toString();//
-//        Map<String, Object> note = new HashMap<>();
-//        note.put(KEY_TITLE, title);
-//        noteDB.set(note).addOnSuccessListener((OnSuccessListener) (aVoid) {
-//                Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
-//        })
-//  }
+
+
+
+
+
+
+
+
 
     public void loadDB (View v) {
         noteDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

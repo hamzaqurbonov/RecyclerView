@@ -56,5 +56,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")
 
+
+    // FirestoreRecyclerOptions
+    implementation ("com.google.firebase:firebase-firestore:17.0.4")
+    implementation ("com.google.firebase:firebase-core:21.1.1")
+    implementation ("com.firebaseui:firebase-ui-firestore:7.1.1")
+//    implementation ("com.firebaseui:firebase-ui-firestore:4.1.0")
+
+
 //    implementation("com.android.support:recyclerview-v7:21.0.+")
 }
