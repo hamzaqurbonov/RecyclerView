@@ -1,12 +1,8 @@
 package com.example.recyclerview;
 
-import android.content.Context;
-import android.content.Intent;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,16 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-
-import java.util.List;
 
 public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteHolder> {
-
-    public NoteAdapter(@NonNull FirestoreRecyclerOptions<NoteModel> options) {
+    private final FirestoreRecyclerOptions<NoteModel> options;
+    private RecyclerViewClickListner listner;
+    public NoteAdapter(FirestoreRecyclerOptions<NoteModel> options, RecyclerViewClickListner listner) {
         super(options);
+        this.listner=listner;
+        this.options=options;
+//        super(options);
     }
 
     @NonNull
@@ -50,7 +45,7 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
 
 
 
-    class NoteHolder extends RecyclerView.ViewHolder {
+    class NoteHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textViewTitle;
         TextView textViewDescription;
         TextView textViewPriority;
@@ -60,7 +55,19 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
             textViewPriority = itemView.findViewById(R.id.first_name);
 //            textViewDescription = itemView.findViewById(R.id.last_name);
             textViewTitle = itemView.findViewById(R.id.last_name);
+            itemView.setOnClickListener(this);
         }
+        @Override
+        public void onClick(View v) {
+                listner.onClick(itemView, getAdapterPosition());
+        }
+
+
+
+    }
+
+    public interface RecyclerViewClickListner {
+        void onClick(View v, int position);
     }
 }
 

@@ -41,7 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
 //          nameTextView.setText(usersmane);
 
 
-        nameTextView.setText(getIntent().getExtras().getString("Kurbanov"));
+//        nameTextView.setText(getIntent().getExtras().getString("titles"));
 
 //        Log.d("demo17", String.valueOf(usersmane));
 
@@ -79,7 +79,7 @@ public class MainActivity2 extends AppCompatActivity {
 //                setPlayNextVideoButtonClickListener(youTubePlayer);
                 YouTubePlayerUtils.loadOrCueVideo(
                         youTubePlayer, getLifecycle(),
-                        setText(getIntent().getExtras().getString("Kurbanov")),
+                        "",
                         0f
                 );
 //                Log.d("demo17", getSetText().toString());

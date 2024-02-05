@@ -59,12 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_TITLE = "shortObj";
 
     TextView dbText;
+//    FirestoreRecyclerOptions<NoteModel> options;
+
 //    YouTubePlayerView youTubePlayerView;
 //    List<Model> modellist = new ArrayList<>();
 //
 //    private Context context;
 //    private RecyclerView recyclerView;
-//    private CustomAdapter.RecyclerViewClickListner listner;
+    private NoteAdapter.RecyclerViewClickListner listner;
 //    Button playNextVideoButton;
 //    TextView dbText;
 //    private CustomAdapter adapter;
@@ -101,22 +103,11 @@ public class MainActivity extends AppCompatActivity {
         Query query = notebookRef.orderBy("titles", Query.Direction.DESCENDING);
 
 
-
-//        Query query = FirebaseFirestore.getInstance().collection("Notebook").orderBy("priority", Query.Direction.DESCENDING);
-
-            FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
+        FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
                 .setQuery(query, NoteModel.class)
                 .build();
-
-//        FirestoreRecyclerOptions<NoteModel> allfirestorerecycler= new FirestoreRecyclerOptions.Builder<NoteModel>()
-//            .setQuery(<Query>, query.NoteModel.class)
-//            .build();
-
-//        FirestoreRecyclerOptions<NoteModel.class> options = new FirestoreRecyclerOptions.Builder<NoteModel.class>()
-//                .setQuery(query, NoteModel.class)
-//                .build();
-
-        adapter = new NoteAdapter(options);
+        setOnClickListner();
+        adapter = new NoteAdapter(options, listner);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -136,12 +127,39 @@ public class MainActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+    private void setOnClickListner() {
+//        Log.d("demo15", );
+        listner = new NoteAdapter.RecyclerViewClickListner() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+//                intent.putExtra( "Kurbanov",options .get(position).getLastName());
+                startActivity(intent);
+            }
+
+        };
+
+    }
 
 
+    public void loadDB (View v) {
+        noteDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String title = documentSnapshot.getString(KEY_TITLE);
+                    dbText.setText("URL: " + title);
+                } else {
+                    Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-
-
-
+            }
+        });
+    }
 
 
 
@@ -161,19 +179,7 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(adapter);
 //    }
 //
-//    private void setOnClickListner() {
-////        Log.d("demo15", );
-//        listner = new CustomAdapter.RecyclerViewClickListner() {
-//            @Override
-//            public void onClick(View v, int position) {
-//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-//                startActivity(intent);
-//            }
-//
-//        };
-//
-//    }
+
 
 //
 
@@ -201,24 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void loadDB (View v) {
-        noteDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String title = documentSnapshot.getString(KEY_TITLE);
-                    dbText.setText("URL: " + title);
-                } else {
-                    Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
-        });
-    }
 
 
 
