@@ -20,19 +20,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.List;
 
-
-
 public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteHolder> {
 
     public NoteAdapter(@NonNull FirestoreRecyclerOptions<NoteModel> options) {
         super(options);
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel model) {
-//        holder.textViewTitle.setText(model.getTitle());
-//        holder.textViewDescription.setText(model.getDescription());
-        holder.textViewPriority.setText(String.valueOf(model.getPriority()));
     }
 
     @NonNull
@@ -43,6 +34,22 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
         return new NoteHolder(v);
     }
 
+
+
+    @Override
+    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel model) {
+        holder.textViewTitle.setText(model.getTitle());
+//        holder.textViewDescription.setText(model.getDescription());
+        holder.textViewPriority.setText(String.valueOf(model.getPriority()));
+    }
+
+
+
+
+
+
+
+
     class NoteHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
         TextView textViewDescription;
@@ -51,8 +58,8 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
         public NoteHolder(View itemView) {
             super(itemView);
             textViewPriority = itemView.findViewById(R.id.first_name);
-//            textViewDescription = itemView.findViewById(R.id.text_view_description);
-//            textViewPriority = itemView.findViewById(R.id.text_view_priority);
+//            textViewDescription = itemView.findViewById(R.id.last_name);
+            textViewTitle = itemView.findViewById(R.id.last_name);
         }
     }
 }

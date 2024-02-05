@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setUpRecyclerView() {
-        Query query = notebookRef.orderBy("priority", Query.Direction.DESCENDING);
+        Query query = notebookRef.orderBy("titles", Query.Direction.DESCENDING);
 
 
 
