@@ -30,8 +30,8 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
 
     @Override
     protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel model) {
-        holder.textViewTitle.setText(model.getTitle());
-        holder.textViewDescription.setText(model.getDescription());
+//        holder.textViewTitle.setText(model.getTitle());
+//        holder.textViewDescription.setText(model.getDescription());
         holder.textViewPriority.setText(String.valueOf(model.getPriority()));
     }
 
@@ -50,9 +50,9 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
 
         public NoteHolder(View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.text_view_title);
-            textViewDescription = itemView.findViewById(R.id.text_view_description);
-            textViewPriority = itemView.findViewById(R.id.text_view_priority);
+            textViewPriority = itemView.findViewById(R.id.first_name);
+//            textViewDescription = itemView.findViewById(R.id.text_view_description);
+//            textViewPriority = itemView.findViewById(R.id.text_view_priority);
         }
     }
 }

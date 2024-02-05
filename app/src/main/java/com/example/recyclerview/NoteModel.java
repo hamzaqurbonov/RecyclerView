@@ -4,13 +4,13 @@ public class NoteModel {
 
         private String title;
         private String description;
-        private int priority;
+        private String priority;
 
         public NoteModel() {
             //empty constructor needed
         }
 
-        public NoteModel(String title, String description, int priority) {
+        public NoteModel(String title, String description, String priority) {
             this.title = title;
             this.description = description;
             this.priority = priority;
@@ -24,7 +24,7 @@ public class NoteModel {
             return description;
         }
 
-        public int getPriority() {
+        public String getPriority() {
             return priority;
         }
 }
