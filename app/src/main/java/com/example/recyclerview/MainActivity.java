@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
                 .setQuery(query, NoteModel.class)
                 .build();
+
         setOnClickListner();
         adapter = new NoteAdapter(options, listner);
 
@@ -113,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        Log.d("demo21", options.toString());
     }
+
 
     @Override
     protected void onStart() {
@@ -128,12 +132,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOnClickListner() {
-//        Log.d("demo15", );
         listner = new NoteAdapter.RecyclerViewClickListner() {
             @Override
             public void onClick(View v, int position) {
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//                intent.putExtra( "Kurbanov",options .get(position).getLastName());
+//                intent.putExtra( "titles", NoteModel.getPosition(position));
+//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
                 startActivity(intent);
             }
 

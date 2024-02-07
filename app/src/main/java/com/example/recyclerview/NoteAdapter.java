@@ -1,5 +1,7 @@
 package com.example.recyclerview;
 
+import static android.media.CamcorderProfile.get;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.List;
+
 public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteHolder> {
     private final FirestoreRecyclerOptions<NoteModel> options;
+    private List<NoteModel> modellist;
     private RecyclerViewClickListner listner;
     public NoteAdapter(FirestoreRecyclerOptions<NoteModel> options, RecyclerViewClickListner listner) {
         super(options);
@@ -32,16 +37,17 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
 
 
     @Override
-    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel model) {
-        holder.textViewTitle.setText(model.getTitle());
+    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull NoteModel noteModel) {
+
+
+
+            holder.textViewTitle.setText(noteModel.getTitle());
 //        holder.textViewDescription.setText(model.getDescription());
-        holder.textViewPriority.setText(String.valueOf(model.getPriority()));
+            holder.textViewPriority.setText(String.valueOf(noteModel.getPriority()));
+
+
+
     }
-
-
-
-
-
 
 
 
@@ -62,12 +68,11 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
                 listner.onClick(itemView, getAdapterPosition());
         }
 
-
-
     }
 
     public interface RecyclerViewClickListner {
         void onClick(View v, int position);
+
     }
 }
 

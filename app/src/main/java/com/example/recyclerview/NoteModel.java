@@ -5,18 +5,25 @@ public class NoteModel {
         private String title;
         private String description;
         private String priority;
+        int position;
 
         public NoteModel() {
             //empty constructor needed
         }
 
-        public NoteModel(String title, String description, String priority) {
+        public NoteModel(String title, String description, String priority, int position) {
             this.title = title;
             this.description = description;
             this.priority = priority;
+            this.position = position;
         }
 
-        public String getTitle() {
+//    public static int getPosition(int position) {
+//
+//        return position;
+//    }
+
+    public String getTitle() {
             return title;
         }
 
@@ -27,4 +34,5 @@ public class NoteModel {
         public String getPriority() {
             return priority;
         }
-}
+
+   }
