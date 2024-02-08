@@ -1,11 +1,14 @@
 package com.example.recyclerview;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 public class NoteModel {
 
         private String title;
         private String description;
         private String priority;
         int position;
+        FirestoreRecyclerOptions<NoteModel> options;
 
         public NoteModel() {
             //empty constructor needed
@@ -17,6 +20,10 @@ public class NoteModel {
             this.priority = priority;
             this.position = position;
         }
+
+    public NoteModel(FirestoreRecyclerOptions<NoteModel> options) {
+        this.options = options;
+    }
 
 //    public static int getPosition(int position) {
 //

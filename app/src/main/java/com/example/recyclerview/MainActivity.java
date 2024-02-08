@@ -100,14 +100,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setUpRecyclerView() {
-        Query query = notebookRef.orderBy("titles", Query.Direction.DESCENDING);
+
+        Query query = notebookRef.orderBy("title", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>().setQuery(query, NoteModel.class).build();
+
+//        setOnClickListner();
 
 
-        FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>()
-                .setQuery(query, NoteModel.class)
-                .build();
+        listner = new NoteAdapter.RecyclerViewClickListner() {
+            @Override
+            public void onClick(View v, int position) {
 
-        setOnClickListner();
+                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+                intent.putExtra( "title", "1");
+//                intent.putExtra( "title", options.equals(position)); fasle
+//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+                startActivity(intent);
+
+                Log.d("demo21", options.toString());
+
+            }
+
+        };
+
+
+
         adapter = new NoteAdapter(options, listner);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -115,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        Log.d("demo21", options.toString());
+
+//        Log.d("demo21", "2");
     }
 
 
@@ -131,20 +150,20 @@ public class MainActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    private void setOnClickListner() {
-        listner = new NoteAdapter.RecyclerViewClickListner() {
-            @Override
-            public void onClick(View v, int position) {
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//                intent.putExtra( "titles", NoteModel.getPosition(position));
-//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-                startActivity(intent);
-            }
-
-        };
-
-    }
+//    private void setOnClickListner() {
+//        listner = new NoteAdapter.RecyclerViewClickListner() {
+//            @Override
+//            public void onClick(View v, int position) {
+//
+//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+////                intent.putExtra( "title", NoteModel.getPosition(position));
+////                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+//                startActivity(intent);
+//            }
+//
+//        };
+//
+//    }
 
 
     public void loadDB (View v) {

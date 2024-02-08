@@ -41,7 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
 //          nameTextView.setText(usersmane);
 
 
-//        nameTextView.setText(getIntent().getExtras().getString("titles"));
+        nameTextView.setText(getIntent().getExtras().getString("title"));
 
 //        Log.d("demo17", String.valueOf(usersmane));
 
