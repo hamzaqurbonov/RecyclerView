@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
 public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter.NoteHolder> {
     private final FirestoreRecyclerOptions<NoteModel> options;
     private List<NoteModel> modellist;
-    private RecyclerViewClickListner listner;
-    public NoteAdapter(FirestoreRecyclerOptions<NoteModel> options, RecyclerViewClickListner listner) {
+    private OnItemClickListner listner;
+//    private RecyclerViewClickListner listner;
+    public NoteAdapter(FirestoreRecyclerOptions<NoteModel> options) {
         super(options);
         this.listner=listner;
         this.options=options;
@@ -49,9 +51,13 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
 
     }
 
+    public void  deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
 
 
-    class NoteHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    class NoteHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
         TextView textViewDescription;
         TextView textViewPriority;
@@ -61,19 +67,36 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<NoteModel, NoteAdapter
             textViewPriority = itemView.findViewById(R.id.first_name);
 //            textViewDescription = itemView.findViewById(R.id.last_name);
             textViewTitle = itemView.findViewById(R.id.last_name);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int posirion = getAdapterPosition();
+                    if(posirion != RecyclerView.NO_POSITION && listner != null) {
+                        listner.onItemClick(getSnapshots().getSnapshot(posirion), posirion );
+                    }
+                }
+            });
         }
-        @Override
-        public void onClick(View v) {
-                listner.onClick(itemView, getAdapterPosition());
-        }
+//        @Override
+//        public void onClick(View v) {
+//                listner.onClick(itemView, getAdapterPosition());
+//        }
 
     }
 
-    public interface RecyclerViewClickListner {
-        void onClick(View v, int position);
 
+    public interface OnItemClickListner {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
+
+    public void setItemClickListner(OnItemClickListner listner){
+        this.listner = listner;
+    }
+
+//    public interface RecyclerViewClickListner {
+//        void onClick(View v, int position);
+//
+//    }
 }
 
 

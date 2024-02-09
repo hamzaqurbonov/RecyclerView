@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //    private Context context;
 //    private RecyclerView recyclerView;
-    private NoteAdapter.RecyclerViewClickListner listner;
+//    private NoteAdapter.RecyclerViewClickListner listner;
 //    Button playNextVideoButton;
 //    TextView dbText;
 //    private CustomAdapter adapter;
@@ -108,32 +109,54 @@ public class MainActivity extends AppCompatActivity {
 //        setOnClickListner();
 
 
-        listner = new NoteAdapter.RecyclerViewClickListner() {
-            @Override
-            public void onClick(View v, int position) {
+//        listner = new NoteAdapter.RecyclerViewClickListner() {
+//            @Override
+//            public void onClick(View v, int position) {
+//
+//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+//                intent.putExtra( "title", "1");
+////                intent.putExtra( "title", options.equals(position)); fasle
+////                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+//                startActivity(intent);
+//
+//                Log.d("demo21", options.toString());
+//
+//            }
+//
+//        };
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-                intent.putExtra( "title", "1");
-//                intent.putExtra( "title", options.equals(position)); fasle
-//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-                startActivity(intent);
-
-                Log.d("demo21", options.toString());
-
-            }
-
-        };
 
 
-
-        adapter = new NoteAdapter(options, listner);
+        adapter = new NoteAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+       new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+              ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+           @Override
+           public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+               return false;
+           }
 
+           @Override
+           public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                adapter.deleteItem(viewHolder.getAdapterPosition());
+           }
+       }).attachToRecyclerView(recyclerView);
+
+       adapter.setItemClickListner(new NoteAdapter.OnItemClickListner() {
+           @Override
+           public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+               NoteModel noteModel = documentSnapshot.toObject(NoteModel.class);
+               String id = documentSnapshot.getId();
+
+               Toast.makeText(MainActivity.this, "Position" + position + " ID" +id, Toast.LENGTH_SHORT).show();
+
+           }
+       });
 //        Log.d("demo21", "2");
     }
 
