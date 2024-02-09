@@ -79,7 +79,7 @@ public class MainActivity2 extends AppCompatActivity {
 //                setPlayNextVideoButtonClickListener(youTubePlayer);
                 YouTubePlayerUtils.loadOrCueVideo(
                         youTubePlayer, getLifecycle(),
-                        "",
+                        setText(getIntent().getExtras().getString("title")),
                         0f
                 );
 //                Log.d("demo17", getSetText().toString());
