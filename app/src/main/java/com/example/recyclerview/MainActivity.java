@@ -150,10 +150,18 @@ public class MainActivity extends AppCompatActivity {
        adapter.setItemClickListner(new NoteAdapter.OnItemClickListner() {
            @Override
            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-               NoteModel noteModel = documentSnapshot.toObject(NoteModel.class);
+               NoteModel noteMode = documentSnapshot.toObject(NoteModel.class);
                String id = documentSnapshot.getId();
+               String path = documentSnapshot.getReference().getPath();
+               Toast.makeText(MainActivity.this,  position + path  + id , Toast.LENGTH_SHORT).show();
 
-               Toast.makeText(MainActivity.this, "Position" + position + " ID" +id, Toast.LENGTH_SHORT).show();
+               String chapterName = adapter.getItem(position).getTitle();
+
+               Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+//                intent.putExtra( "title", id + " " + position + " " + path );
+                intent.putExtra( "title", chapterName);
+//                intent.putExtra( "Kurbanov",noteMode .get(position).getLastName());
+                startActivity(intent);
 
            }
        });
