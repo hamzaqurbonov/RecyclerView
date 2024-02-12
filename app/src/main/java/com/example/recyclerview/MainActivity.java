@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                String chapterName = adapter.getItem(position).getTitle();
 
                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//                intent.putExtra( "title", id + " " + position + " " + path );
+//             intent.putExtra( "title", id + " " + position + " " + path );
                 intent.putExtra( "title", chapterName);
 //                intent.putExtra( "Kurbanov",noteMode .get(position).getLastName());
                 startActivity(intent);
