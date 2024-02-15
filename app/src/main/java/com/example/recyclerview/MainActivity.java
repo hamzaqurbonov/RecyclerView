@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,290 +53,80 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private NoteAdapter adapter;
+    private EditText editTextTitle;
+    private EditText editTextDescription;
+    private EditText editTextPriority;
+    private EditText editTextTags;
+    private TextView textViewData;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference noteDB = db.document("main/short");
-
-    private CollectionReference  notebookRef = db.collection("Notebook");
-    private static final String KEY_TITLE = "shortObj";
-
-    TextView dbText;
-//    FirestoreRecyclerOptions<NoteModel> options;
-
-//    YouTubePlayerView youTubePlayerView;
-//    List<Model> modellist = new ArrayList<>();
-//
-//    private Context context;
-//    private RecyclerView recyclerView;
-//    private NoteAdapter.RecyclerViewClickListner listner;
-//    Button playNextVideoButton;
-//    TextView dbText;
-//    private CustomAdapter adapter;
-
+    private CollectionReference notebookRef = db.collection("Notebook");
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        youTubePlayerView = findViewById(R.id.youtube_player_view);
-        dbText = findViewById(R.id.db_text);
+        editTextTitle = findViewById(R.id.edit_text_title);
+        editTextDescription = findViewById(R.id.edit_text_description);
+        editTextPriority = findViewById(R.id.edit_text_priority);
+        editTextTags = findViewById(R.id.edit_text_tags);
+        textViewData = findViewById(R.id.text_view_data);
 
-//        getLifecycle().addObserver(youTubePlayerView);
-//        initYouTubePlayerView();
-
-//            initViews();
-//            List<Model> modellist = prepareMemerList();
-//            refreshAdapter(modellist);
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//        myRef.setValue("Hello, World!");
-
-//        getData();
-
-        setUpRecyclerView();
+        updateNestedValue();
     }
 
+    public void addNote(View v) {
+        String title = editTextTitle.getText().toString();
+        String description = editTextDescription.getText().toString();
 
+        if (editTextPriority.length() == 0) {
+            editTextPriority.setText("0");
+        }
 
-    private void setUpRecyclerView() {
+        int priority = Integer.parseInt(editTextPriority.getText().toString());
 
-        Query query = notebookRef.orderBy("title", Query.Direction.DESCENDING);
+        String tagInput = editTextTags.getText().toString();
+        String[] tagArray = tagInput.split("\\s*,\\s*");
+        Map<String, Boolean> tags = new HashMap<>();
 
-        FirestoreRecyclerOptions<NoteModel> options = new FirestoreRecyclerOptions.Builder<NoteModel>().setQuery(query, NoteModel.class).build();
+        for (String tag : tagArray) {
+            tags.put(tag, true);
+        }
 
-//        setOnClickListner();
+        Note note = new Note(title, description, priority, tags);
 
-
-//        listner = new NoteAdapter.RecyclerViewClickListner() {
-//            @Override
-//            public void onClick(View v, int position) {
-//
-//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//                intent.putExtra( "title", "1");
-////                intent.putExtra( "title", options.equals(position)); fasle
-////                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-//                startActivity(intent);
-//
-//                Log.d("demo21", options.toString());
-//
-//            }
-//
-//        };
-
-
-
-        adapter = new NoteAdapter(options);
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-       new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-              ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-           @Override
-           public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-               return false;
-           }
-
-           @Override
-           public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                adapter.deleteItem(viewHolder.getAdapterPosition());
-           }
-       }).attachToRecyclerView(recyclerView);
-
-       adapter.setItemClickListner(new NoteAdapter.OnItemClickListner() {
-           @Override
-           public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-               NoteModel noteMode = documentSnapshot.toObject(NoteModel.class);
-               String id = documentSnapshot.getId();
-               String path = documentSnapshot.getReference().getPath();
-               Toast.makeText(MainActivity.this,  position + path  + id , Toast.LENGTH_SHORT).show();
-
-               String chapterName = adapter.getItem(position).getTitle();
-
-               Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-//             intent.putExtra( "title", id + " " + position + " " + path );
-                intent.putExtra( "title", chapterName);
-//                intent.putExtra( "Kurbanov",noteMode .get(position).getLastName());
-                startActivity(intent);
-
-           }
-       });
-//        Log.d("demo21", "2");
+        notebookRef.add(note);
     }
 
+    public void loadNotes(View v) {
+        notebookRef.whereEqualTo("tags.tag1", true).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        String data = "";
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Note note = documentSnapshot.toObject(Note.class);
+                            note.setDocumentId(documentSnapshot.getId());
+
+                            String documentId = note.getDocumentId();
+
+                            data += "ID: " + documentId;
+
+                            for (String tag : note.getTags().keySet()) {
+                                data += "\n-" + tag;
+                            }
+
+                            data += "\n\n";
+                        }
+                        textViewData.setText(data);
+                    }
+                });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
+    private void updateNestedValue() {
+        notebookRef.document("aoSRcxTCxkLpFcCyldBw")
+                .update("tags.tag1.nested1.nested2", true);
     }
-
-//    private void setOnClickListner() {
-//        listner = new NoteAdapter.RecyclerViewClickListner() {
-//            @Override
-//            public void onClick(View v, int position) {
-//
-//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-////                intent.putExtra( "title", NoteModel.getPosition(position));
-////                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-//                startActivity(intent);
-//            }
-//
-//        };
-//
-//    }
-
-
-    public void loadDB (View v) {
-        noteDB.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String title = documentSnapshot.getString(KEY_TITLE);
-                    dbText.setText("URL: " + title);
-                } else {
-                    Toast.makeText(MainActivity.this, "short", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }
-
-
-
-
-//
-//
-//        private void initViews() {
-//            context = this;
-//            recyclerView = findViewById(R.id.recyclerView);
-//            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
-//
-//        }
-//
-//    private void refreshAdapter (List<Model>modellist) {
-//        setOnClickListner();
-//        CustomAdapter adapter = new CustomAdapter(this, modellist,listner);
-//        recyclerView.setAdapter(adapter);
-//    }
-//
-
-
-//
-
-//
-//    private List<Model> prepareMemerList() {
-//
-//        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
-//        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
-//        modellist.add(new Model("Kurbanov", "k_an7b4r1_Q"));
-//
-////        for (int i = 0; i<=5; i++) {
-////            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
-////
-////        }
-//        return modellist;
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private void getData() {
-//        FirebaseFirestore db  = FirebaseFirestore.getInstance();
-//        db.collection("main")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                dbText.setText(document.getId() + document.getData());
-////                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                Log.d("demo21", document.getId() + " => " + document.getData());
-//                            }
-//                        } else {
-////                            Log.w(TAG, "Error getting documents.", task.getException());
-//                            Log.d("demo21", "Error getting documents.", task.getException());
-//                        }
-//                    }
-//                });
-//    }
-
-
-
-//
-//
-//    public void initYouTubePlayerView() {
-//        getLifecycle().addObserver(youTubePlayerView);
-////        View customPlayerUi = youTubePlayerView.inflateCustomPlayerUi(R.layout.layout_panel);
-//
-//        YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
-//            @Override
-//            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-//
-////                CustomPlayerUiController customPlayerUiController = new CustomPlayerUiController(requireContext(), customPlayerUi, youTubePlayer, youTubePlayerView);
-////                youTubePlayer.addListener(customPlayerUiController);
-//                setPlayNextVideoButtonClickListener(youTubePlayer);
-//                YouTubePlayerUtils.loadOrCueVideo(
-//                        youTubePlayer, getLifecycle(),
-//                       "HXrETVPKWh0",
-//                        0f
-//                );
-////                Log.d("demo21", "1");
-//            }
-//        };
-//        // disable web ui
-//        IFramePlayerOptions options = new IFramePlayerOptions.Builder().controls(0).build();
-//        youTubePlayerView.initialize(listener, options);
-//    }
-//
-//
-//
-////
-//
-//    private void setPlayNextVideoButtonClickListener(final YouTubePlayer youTubePlayer) {
-//
-////        Button playNextVideoButton = findViewById(R.id.button);
-//
-//
-//        playNextVideoButton.setOnClickListener(view ->
-//
-//                YouTubePlayerUtils.loadOrCueVideo(
-//                        youTubePlayer,
-//                        getLifecycle(),
-//                        "vBxNDtyE_Co",
-//                        0f
-//
-//                )
-//
-//        );
-//        Log.d("demo21", "2");
-//    }
 }
