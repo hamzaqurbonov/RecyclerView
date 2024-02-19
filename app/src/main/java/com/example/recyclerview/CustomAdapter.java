@@ -10,15 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CustomAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder> {
 
+//    private final FirestoreRecyclerOptions<Model> options2;
     private RecyclerViewClickListner listner;
     public List<Model> modellist;
 
-    public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
+
+    public CustomAdapter(MainActivity activity, RecyclerViewClickListner listner) {
+
+//        this.options2 = options2;
         this.modellist=modellist;
         this.listner=listner;
+
     }
+
 
 
     @NonNull
@@ -28,36 +34,47 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return new CustomViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        Model member = modellist.get(position);
-        if(holder instanceof CustomViewHolder){
-
-            TextView fist_name = ((CustomViewHolder) holder).first_name;
-            TextView last_name = ((CustomViewHolder) holder).last_name;
-
-            fist_name.setText(member.getFirstName());
-            last_name.setText(member.getLastName());
-        }
+//        holder.fist_name.setText(model.getTitle());
+//
+//        holder.itemView.setText(model.getTitle());
+//
+//        Model member = options2.get(position);
+//        if(holder instanceof CustomViewHolder){
+//
+//            TextView fist_name = ((CustomViewHolder) holder).first_name;
+//            TextView last_name = ((CustomViewHolder) holder).last_name;
+//
+//            fist_name.setText(member.getIdUrl());
+//            last_name.setText(member.getIdUrl());
+//        }
 
     }
+
+//    @Override
+//    protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Model model) {
+////        holder.itemView.findViewById(R.id.first_name);
+//
+//    }
 
     @Override
     public int getItemCount() {
-        return modellist.size();
+        return 4;
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public View view;
-        public TextView first_name, last_name;
-        public CustomViewHolder(View v) {
-            super(v);
-            view = v;
+        View view;
+        TextView Url, last_name;
+        public CustomViewHolder(@NonNull View itemView) {
+            super(itemView);
+//            view = v;
 
-            first_name = view.findViewById(R.id.first_name);
-            last_name = view.findViewById(R.id.last_name);
-            view.setOnClickListener(this);
+            Url = itemView.findViewById(R.id.first_name);
+            last_name = itemView.findViewById(R.id.last_name);
+            itemView.setOnClickListener(this);
         }
 
         @Override
