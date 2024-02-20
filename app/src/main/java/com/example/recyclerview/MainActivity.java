@@ -1,10 +1,13 @@
 package com.example.recyclerview;
 
 
+import static android.graphics.Insets.add;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference hadRef = db.collection("Notebook2");
 
-//    ArrayList<String> list =  new ArrayList<>();
+    public static   ArrayList<String> list2 =  new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,13 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         ArrayList<String> list = (ArrayList<String>) document.get("tagm");
-                        Log.d("demo12", list.toString());
+
+                        list2.add(String.valueOf(list));
+
                     }
                 }
             }
+
         });
 
 
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
+
     }
 
 
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        FirestoreRecyclerOptions<Model> options2 = new FirestoreRecyclerOptions.Builder<Model>().setQuery(query, Model.class).build();
 
-        CustomAdapter adapter = new CustomAdapter(this, listner);
+        CustomAdapter adapter = new CustomAdapter(this, modellist, listner);
         recyclerView.setAdapter(adapter);
     }
 
@@ -104,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v, int position) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
 //                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-
+                Log.d("demo12", list2.toString());
                 Toast.makeText(MainActivity.this, "ID " + position , Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }

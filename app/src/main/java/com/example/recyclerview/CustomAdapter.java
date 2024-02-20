@@ -12,12 +12,12 @@ import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder> {
 
-//    private final FirestoreRecyclerOptions<Model> options2;
+    MainActivity mainActivity;
     private RecyclerViewClickListner listner;
     public List<Model> modellist;
 
 
-    public CustomAdapter(MainActivity activity, RecyclerViewClickListner listner) {
+    public CustomAdapter(MainActivity activity, List<Model> modellist, RecyclerViewClickListner listner) {
 
 //        this.options2 = options2;
         this.modellist=modellist;
