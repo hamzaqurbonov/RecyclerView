@@ -42,6 +42,9 @@ public class Activity2Adapter extends RecyclerView.Adapter< RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 
+        TextView Url= ((Activity2AdapterViewHolder) holder).last_name;
+        Url.setText(activity2.activityllist.get(position));
+
     }
 
     @Override
@@ -57,12 +60,12 @@ public class Activity2Adapter extends RecyclerView.Adapter< RecyclerView.ViewHol
         View view;
         TextView Url, last_name;
 
-        public Activity2AdapterViewHolder(@NonNull View itemView) {
-            super(itemView);
-//            view = v;
+        public Activity2AdapterViewHolder(View v) {
+            super(v);
+            view = v;
 
-            Url = itemView.findViewById(R.id.first_2);
-            last_name = itemView.findViewById(R.id.last_2);
+            Url = view.findViewById(R.id.first_2);
+            last_name = view.findViewById(R.id.last_2);
 
         }
 
