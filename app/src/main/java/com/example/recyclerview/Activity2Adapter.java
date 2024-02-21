@@ -1,5 +1,6 @@
 package com.example.recyclerview;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,26 @@ import java.util.List;
 public class Activity2Adapter extends RecyclerView.Adapter< RecyclerView.ViewHolder> {
 
 
+//    private static final String[] VideoIds = {"pcbGX4JcILA", "asdsd"};
+
     MainActivity2 activity2;
-    List<Activity2Model> modellist ;
+    List<String> activityllist ;
+    List<String> modellist2;
     public ArrayList<String> list2;
 
-    public Activity2Adapter(MainActivity2 activity2, List<Activity2Model> modellist) {
-        this.modellist = modellist;
+
+    public Activity2Adapter(MainActivity2 activity2, List<String> modellist) {
+        this.activityllist = activityllist;
         this.activity2 = activity2;
+        Log.d("demo16","4 "+ activity2.activityllist.toString());
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity2_item, parent, false);
+
+
         return new Activity2Adapter.Activity2AdapterViewHolder(view);
     }
 
@@ -38,7 +46,11 @@ public class Activity2Adapter extends RecyclerView.Adapter< RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 5;
+        int dd =  activity2.activityllist.size() ;
+        Log.d("demo16","5 "+ dd);
+//           String[] dd = new String[]{activity2.activityllist.toString()};
+
+        return dd;
     }
 
     public class Activity2AdapterViewHolder extends RecyclerView.ViewHolder {

@@ -111,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v, int position) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
 //                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-                Log.d("demo12", list2.toString());
+                Log.d("demo12", String.valueOf(list2));
+
+                intent.putExtra("title", list2.toString());
                 Toast.makeText(MainActivity.this, "ID " + position , Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
