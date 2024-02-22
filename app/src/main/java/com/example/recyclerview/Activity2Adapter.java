@@ -49,7 +49,7 @@ public class Activity2Adapter extends RecyclerView.Adapter< RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        int dd =  activity2.activityllist.size() ;
+        int dd =  activity2.activityllist.size();
         Log.d("demo16","5 "+ dd);
 //           String[] dd = new String[]{activity2.activityllist.toString()};
 

@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    List<Model> modellist = new ArrayList<>();
+    private LongAdapter adapter;
     private RecyclerView recyclerView;
-    private CustomAdapter.RecyclerViewClickListner listner;
+//    List<Model> modellist = new ArrayList<>();
+//    private RecyclerView recyclerView;
+//    private CustomAdapter.RecyclerViewClickListner listner;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference hadRef = db.collection("Notebook2");
 
@@ -40,87 +42,133 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initViews();
-        prepareMemerList();
-        setOnClickListner();
-//        Activity2RecyclerView();
-        refreshAdapter(modellist);
+//        initViews();
+//        prepareMemerList();
+//        setOnClickListner();
+//        refreshAdapter(modellist);
 
-        db.collection("Notebook2").document("zlenq8wcvT1bb1lKsIfV").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        recyclerView = findViewById(R.id.recyclerView);
+        setUpRecyclerView();
+
+
+    }
+
+
+    private void setUpRecyclerView() {
+
+        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<LongModel> options = new FirestoreRecyclerOptions.Builder<LongModel>().setQuery(query, LongModel.class).build();
+
+        adapter = new LongAdapter(options);
+
+//        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3  ));
+        recyclerView.setAdapter(adapter);
+
+
+
+        adapter.setItemClickListner(new LongAdapter.OnItemClickListner() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        ArrayList<String> list = (ArrayList<String>) document.get("tagm");
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                LongModel noteMode = documentSnapshot.toObject(LongModel.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Toast.makeText(MainActivity.this,  position + " " + id , Toast.LENGTH_SHORT).show();
 
-                        list2.add(String.valueOf(list));
+                String chapterName = adapter.getItem(position).getTitle();
+                String getIdUrl = adapter.getItem(position).getIdUrl();
+//                String getImageUrl = adapter.getItem(position).getImageUrl();
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("id", id);
+                intent.putExtra("title", chapterName);
+                intent.putExtra("idUrl", getIdUrl);
+//                intent.putExtra("imageUrl", getImageUrl);
+                startActivity(intent);
 
-                    }
-                }
             }
-
         });
 
-
-
     }
-//    private void Activity2RecyclerView() {
-//        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    private void initViews() {
+//        recyclerView = findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
 //
-//        FirestoreRecyclerOptions<Model> options2 = new FirestoreRecyclerOptions.Builder<Model>().setQuery(query, Model.class).build();
+//    }
 //
-//        adapter = new Activity2Adapter(options2);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+//
+//    private void refreshAdapter(List<Model> modellist) {
+////        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
+////
+////        FirestoreRecyclerOptions<Model> options2 = new FirestoreRecyclerOptions.Builder<Model>().setQuery(query, Model.class).build();
+//
+//        CustomAdapter adapter = new CustomAdapter(this, modellist, listner);
 //        recyclerView.setAdapter(adapter);
 //    }
-
-    private void initViews() {
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-
-    }
-
-
-    private void refreshAdapter(List<Model> modellist) {
-//        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
 //
-//        FirestoreRecyclerOptions<Model> options2 = new FirestoreRecyclerOptions.Builder<Model>().setQuery(query, Model.class).build();
+//    private List prepareMemerList() {
+//        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
+//        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
+//        modellist.add(new Model("Kurbanov", "741"));
+//        return modellist;
+//    }
+//
+//    private void setOnClickListner() {
+//
+//
+//        listner = new CustomAdapter.RecyclerViewClickListner() {
+//            @Override
+//            public void onClick(View v, int position) {
+//                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+////                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+//                Log.d("demo12", String.valueOf(list2));
+//
+//                intent.putExtra("title", list2.toString());
+//                Toast.makeText(MainActivity.this, "ID " + position , Toast.LENGTH_SHORT).show();
+//                startActivity(intent);
+//            }
+//
+//        };
+//
+//    }
 
-        CustomAdapter adapter = new CustomAdapter(this, modellist, listner);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private List prepareMemerList() {
-        modellist.add(new Model("Kurbanov", "HXrETVPKWh0"));
-        modellist.add(new Model("Kurbanov", "X3tr5ax78V4"));
-        modellist.add(new Model("Kurbanov", "741"));
-
-//        for (int i = 0; i<=5; i++) {
-//            modellist.add(new Model("Kurbanov " + i, "Hamza " + i));
-//        }
-        return modellist;
-    }
-
-    private void setOnClickListner() {
 
 
-        listner = new CustomAdapter.RecyclerViewClickListner() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
-                Log.d("demo12", String.valueOf(list2));
-
-                intent.putExtra("title", list2.toString());
-                Toast.makeText(MainActivity.this, "ID " + position , Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-            }
-
-        };
-
-    }
 
 
 }

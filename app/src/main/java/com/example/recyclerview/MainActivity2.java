@@ -34,7 +34,9 @@ public class MainActivity2 extends AppCompatActivity {
         nameText = findViewById(R.id.nameText);
 //        nameText.setText(getIntent().getExtras().getString("title"));
 
-        db.collection("Notebook2").document("zlenq8wcvT1bb1lKsIfV").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        String model = getIntent().getExtras().getString("id");
+
+        db.collection("Notebook2").document(model).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -53,19 +55,17 @@ public class MainActivity2 extends AppCompatActivity {
 
         });
 
-        String model = getIntent().getExtras().getString("title");
 
 
-        modellist2.add(model);
+
         nameText.setText(model);
-        Log.d("demo16", "2 " + activityllist.toString());
+//        Log.d("demo16", "2 " + activityllist.toString());
 //        Log.d("demo16", String.valueOf(activityllist.size()));
 
         initViews();
         prepareMemerList();
         refreshAdapter(activityllist);
     }
-
 
 
     private void initViews() {
