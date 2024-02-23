@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,16 +21,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity {
+
+
+    private Activity2Adapter.RecyclerViewClickListner listner;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    List<Activity2Model> modellist = new ArrayList<>();
-    static List<String> modellist2 = new ArrayList<>();
-    static List<String> activityllist = new ArrayList<>();
     private RecyclerView recyclerView;
-
     TextView nameText;
-    String n;
+    static List<String> activityllist = new ArrayList<>();
 
-    @Override
+
+
+
+//    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
@@ -42,12 +47,8 @@ public class MainActivity2 extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        List<String> list = (ArrayList<String>) document.get("tagm");
+//                        List<String> list = (ArrayList<String>) document.get("tagm");
                         activityllist = (List<String>) document.get("tagm");
-
-                        Log.d("demo16", "1 " + activityllist.toString());
-                        Log.d("demo16", "3 " + activityllist.size());
-//                        activityllist.add(String.valueOf(list));
 
                     }
                 }
@@ -55,15 +56,10 @@ public class MainActivity2 extends AppCompatActivity {
 
         });
 
-
-
-
         nameText.setText(model);
-//        Log.d("demo16", "2 " + activityllist.toString());
-//        Log.d("demo16", String.valueOf(activityllist.size()));
 
         initViews();
-        prepareMemerList();
+        setOnClickListner();
         refreshAdapter(activityllist);
     }
 
@@ -77,14 +73,25 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void refreshAdapter(List<String> activityllist) {
 
-        Activity2Adapter adapter = new Activity2Adapter(this, activityllist);
+        Activity2Adapter adapter = new Activity2Adapter(this, activityllist, listner);
         recyclerView.setAdapter(adapter);
     }
 
-    private List prepareMemerList() {
-        modellist.add(new Activity2Model("Kurbanov", "HXrETVPKWh0"));
-        modellist.add(new Activity2Model("Kurbanov", "X3tr5ax78V4"));
-        modellist.add(new Activity2Model("Kurbanov", "741"));
-        return modellist;
+
+    private void setOnClickListner() {
+
+        listner = new Activity2Adapter.RecyclerViewClickListner() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+                Toast.makeText(MainActivity2.this,  "1", Toast.LENGTH_SHORT).show();
+//                intent.putExtra( "Kurbanov",modellist .get(position).getLastName());
+                startActivity(intent);
+            }
+
+        };
+
     }
+
+
 }
