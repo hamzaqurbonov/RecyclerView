@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -27,8 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recyclerView;
     TextView nameText;
-    static List<String> activityllist = new ArrayList<>();
-
+    List<String> activityllist = new ArrayList<>();
 
 
 
@@ -50,6 +50,19 @@ public class MainActivity2 extends AppCompatActivity {
 //                        List<String> list = (ArrayList<String>) document.get("tagm");
                         activityllist = (List<String>) document.get("tagm");
 
+                        initViews();
+                        setOnClickListner();
+                        refreshAdapter(activityllist);
+
+                        Map<String, Object> map = document.getData();
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            if (entry.getKey().equals("idUrl")) {
+                                Log.d("demo22", entry.getValue().toString());
+                            }
+                            if (entry.getKey().equals("tagm")) {
+                                Log.d("demo22", entry.getValue().toString());
+                            }
+                        }
                     }
                 }
             }
@@ -58,16 +71,16 @@ public class MainActivity2 extends AppCompatActivity {
 
         nameText.setText(model);
 
-        initViews();
-        setOnClickListner();
-        refreshAdapter(activityllist);
+//        initViews();
+//        setOnClickListner();
+//        refreshAdapter(activityllist);
     }
 
 
     private void initViews() {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity2.this, 1));
-
+//        Log.d("demo22", activityllist.toString());
     }
 
 

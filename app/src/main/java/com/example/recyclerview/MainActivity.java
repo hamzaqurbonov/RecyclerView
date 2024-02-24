@@ -26,8 +26,10 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    static List<String> activityllist1 = new ArrayList<>();
     private LongAdapter adapter;
     private RecyclerView recyclerView;
 //    List<Model> modellist = new ArrayList<>();
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 String id = documentSnapshot.getId();
                 String path = documentSnapshot.getReference().getPath();
                 Toast.makeText(MainActivity.this,  position + " " + id , Toast.LENGTH_SHORT).show();
+
+
 
                 String chapterName = adapter.getItem(position).getTitle();
                 String getIdUrl = adapter.getItem(position).getIdUrl();

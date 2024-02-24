@@ -39,14 +39,20 @@ public class MainActivity3 extends AppCompatActivity {
         String model = getIntent().getExtras().getString("id");
 
         nameText3.setText(model);
-        db.collection("Notebook2").document(model).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Notebook2").document(model)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-//                        List<String> list = (ArrayList<String>) document.get("tagm");
+                        List<String> list = (ArrayList<String>) document.get("tagm");
                         activityllist = (List<String>) document.get("tagm");
+
+
+                        initViews();
+                        setOnClickListner();
+                        refreshAdapter(activityllist);
 
                     }
                 }
@@ -56,9 +62,9 @@ public class MainActivity3 extends AppCompatActivity {
 //
 
 
-        initViews();
-        setOnClickListner();
-        refreshAdapter(activityllist);
+//        initViews();
+//        setOnClickListner();
+//        refreshAdapter(activityllist);
     }
 
 
