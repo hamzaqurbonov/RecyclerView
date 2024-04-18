@@ -41,11 +41,11 @@ public class LongAdapter extends FirestoreRecyclerAdapter<LongModel, LongAdapter
 //        holder.imgChildItem.setImage(noteModel.getImageUrl());
 
 
-        Glide.with(holder.itemView.getContext()) // get context from view
-                .load(noteModel.getImageUrl())
-                .centerCrop()
-                .placeholder(R.drawable.image18)
-                .into(holder.imgChildItem);
+//        Glide.with(holder.itemView.getContext()) // get context from view
+//                .load(noteModel.getImageUrl())
+//                .centerCrop()
+//                .placeholder(R.drawable.image18)
+//                .into(holder.imgChildItem);
     }
 
 //    public void  deleteItem(int position) {
@@ -60,7 +60,7 @@ public class LongAdapter extends FirestoreRecyclerAdapter<LongModel, LongAdapter
             super(itemView);
             videoName = itemView.findViewById(R.id.first_name);
             Url = itemView.findViewById(R.id.first_name);
-            imgChildItem = itemView.findViewById(R.id.img_child_item);
+//            imgChildItem = itemView.findViewById(R.id.img_child_item);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3  ));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,1  ));
         recyclerView.setAdapter(adapter);
 
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 String getIdUrl = adapter.getItem(position).getIdUrl();
 //                String getImageUrl = adapter.getItem(position).getImageUrl();
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", getIdUrl);
                 intent.putExtra("title", chapterName);
                 intent.putExtra("idUrl", getIdUrl);
 //                intent.putExtra("imageUrl", getImageUrl);

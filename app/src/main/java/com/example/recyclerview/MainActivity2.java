@@ -28,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recyclerView;
     TextView nameText;
+    TextView firstname;
     List<String> activityllist = new ArrayList<>();
 
 
@@ -37,7 +38,8 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         nameText = findViewById(R.id.nameText);
-//        nameText.setText(getIntent().getExtras().getString("title"));
+        firstname = findViewById(R.id.first_name2);
+        firstname.setText(getIntent().getExtras().getString("title"));
 
         String model = getIntent().getExtras().getString("id");
 
@@ -70,6 +72,7 @@ public class MainActivity2 extends AppCompatActivity {
         });
 
         nameText.setText(model);
+//        firstname.setText(model);
 
 //        initViews();
 //        setOnClickListner();
