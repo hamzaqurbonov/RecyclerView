@@ -10,8 +10,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +35,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     static List<String> activityllist1 = new ArrayList<>();
     private LongAdapter adapter;
+
     private RecyclerView recyclerView;
 //    List<Model> modellist = new ArrayList<>();
 //    private RecyclerView recyclerView;
@@ -44,16 +49,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
+//        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+
 //        initViews();
 //        prepareMemerList();
 //        setOnClickListner();
 //        refreshAdapter(modellist);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerviewId);
         setUpRecyclerView();
 
 
     }
+
+
 
 
     private void setUpRecyclerView() {
@@ -108,25 +128,45 @@ public class MainActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item,menu);
+        MenuItem item = menu.findItem(R.id.searchId);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String newText) {
+                mysearch(newText);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mysearch(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
 
+    private void mysearch(String str) {
+        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
 
+        FirestoreRecyclerOptions<LongModel> options =
+                new FirestoreRecyclerOptions.Builder<LongModel>()
+                        .setQuery(hadRef.orderBy("idUrl") .startAt(str).endAt(str+"\uf8ff"), LongModel.class).build();
+//        .startAt(str).endAt(str+"\uf8ff")
 
+        adapter = new LongAdapter(options);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,1  ));
+        recyclerView.setAdapter(adapter);
+    }
 
 
 //    private void initViews() {
