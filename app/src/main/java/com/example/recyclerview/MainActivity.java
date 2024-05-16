@@ -4,6 +4,7 @@ package com.example.recyclerview;
 import static android.graphics.Insets.add;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,16 +14,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
+//import android.widget.SearchView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
+//import androidx.appcompat.widget.SearchView;
 
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,10 +55,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(findViewById(R.id.toolbar));
-//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+//        setSupportActionBar(findViewById(R.id.toolbar));
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+
+//        setSupportActionBar(findViewById(R.id.toolbar));
+////        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+        Log.d("demo3", "mysearch: 3");
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -71,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         setUpRecyclerView();
 
 
+
+
     }
 
 
@@ -85,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new LongAdapter(options);
 
 //        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,1  ));
         recyclerView.setAdapter(adapter);
 
@@ -131,8 +145,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item,menu);
-        MenuItem item = menu.findItem(R.id.searchId);
-        SearchView searchView = (SearchView) item.getActionView();
+        MenuItem menuItem = menu.findItem(R.id.searchId);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+
+
+        searchView.setQueryHint("Search 123");
+        Log.d("demo3", "mysearch: 1");
+
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -143,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+//                recyclerView.getFilterTouchesWhenObscured();
                 mysearch(newText);
                 return false;
             }
@@ -153,17 +175,25 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void mysearch(String str) {
-        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
+//        Query query = hadRef.orderBy("idUrl", Query.Direction.DESCENDING);
+//
+        Log.d("demo3", "mysearch: 2");
+//
+//        FirestoreRecyclerOptions<LongModel> options =
+//                new FirestoreRecyclerOptions.Builder<LongModel>()
+//                        .setQuery( query, LongModel.class).build();
+//        hadRef.orderBy("idUrl") .startAt(str).endAt(str+"\uf8ff")
+
+        Query query = hadRef.orderBy("title", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<LongModel> options =
                 new FirestoreRecyclerOptions.Builder<LongModel>()
-                        .setQuery(hadRef.orderBy("idUrl") .startAt(str).endAt(str+"\uf8ff"), LongModel.class).build();
-//        .startAt(str).endAt(str+"\uf8ff")
+                .setQuery(query, LongModel.class).build();
 
         adapter = new LongAdapter(options);
 
 //        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,1  ));
         recyclerView.setAdapter(adapter);
     }
