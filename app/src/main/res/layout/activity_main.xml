@@ -7,10 +7,83 @@
     tools:context=".MainActivity">
 
 
+    <!--edit text to enter course duration-->
+
+    <!--edit text to display course tracks-->
+
+    <!--edit text for course description-->
+
+
+    <EditText
+        android:id="@+id/idEdtCourseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Enter course Name"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/idEdtCourseDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Enter Course Duration"
+        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseName"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <EditText
+        android:id="@+id/idEdtCourseTracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Enter Course Tracks"
+        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseDuration"
+        tools:layout_editor_absoluteX="43dp" />
+
+    <EditText
+        android:id="@+id/idTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="idTest"
+        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseTracks"
+        tools:layout_editor_absoluteX="54dp" />
+
+    <EditText
+        android:id="@+id/idEdtCourseDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Enter Course Description"
+        app:layout_constraintTop_toBottomOf="@+id/idTest"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <Button
+        android:id="@+id/idBtnAddCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Course"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseDescription"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <Button
+        android:id="@+id/idBtnReadCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Read All Courses"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idBtnAddCourse" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewId"
-        android:layout_width="400dp"
-        android:layout_height="548dp"
+        android:layout_width="408dp"
+        android:layout_height="156dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -24,22 +97,22 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_item"
 
-        app:menu="@menu/menu_item" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-<!--    <SearchView-->
-<!--        android:id="@+id/searchtoolbar"-->
-<!--        android:layout_width="409dp"-->
-<!--        android:layout_height="27dp"-->
-<!--        android:layout_marginBottom="40dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/recyclerviewId"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <!--    <SearchView-->
+    <!--        android:id="@+id/searchtoolbar"-->
+    <!--        android:layout_width="409dp"-->
+    <!--        android:layout_height="27dp"-->
+    <!--        android:layout_marginBottom="40dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/recyclerviewId"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 
     <!-- This is the parent RecyclerView-->
