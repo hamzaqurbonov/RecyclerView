@@ -60,10 +60,7 @@ public class SqliteModel {
         public void setId(int id) { this.id = id; }
 
         // constructor
-        public SqliteModel(String courseName,
-                           String courseDuration,
-                           String courseTracks,
-                           String courseDescription, String courseTest)
+        public SqliteModel(String courseTest)
         {
             this.courseName = courseName;
             this.courseDuration = courseDuration;

@@ -15,52 +15,52 @@
         android:orientation="vertical">
 
         <!--text view for our course name-->
-        <TextView
-            android:id="@+id/idTVCourseName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:text="Course Name"
-            android:textColor="@color/black" />
+<!--        <TextView-->
+<!--            android:id="@+id/idTVCourseName"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="3dp"-->
+<!--            android:text="Course Name"-->
+<!--            android:textColor="@color/black" />-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="2">-->
 
-            <!--text view for our course tracks-->
-            <TextView
-                android:id="@+id/idTVCourseTracks"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="3dp"
-                android:text="Course Tracks"
-                android:textColor="@color/black" />
+<!--            &lt;!&ndash;text view for our course tracks&ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/idTVCourseTracks"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:padding="3dp"-->
+<!--                android:text="Course Tracks"-->
+<!--                android:textColor="@color/black" />-->
 
 
-            <!--text view for our course duration-->
-            <TextView
-                android:id="@+id/idTVCourseDuration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="3dp"
-                android:text="Duration"
-                android:textColor="@color/black" />
+<!--            &lt;!&ndash;text view for our course duration&ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/idTVCourseDuration"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:padding="3dp"-->
+<!--                android:text="Duration"-->
+<!--                android:textColor="@color/black" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-        text view for our course description
-        <TextView
-            android:id="@+id/idTVCourseDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="3dp"
-            android:text="Description"
-            android:textColor="@color/black" />
+<!--        text view for our course description-->
+<!--        <TextView-->
+<!--            android:id="@+id/idTVCourseDescription"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:padding="3dp"-->
+<!--            android:text="Description"-->
+<!--            android:textColor="@color/black" />-->
 
         <TextView
             android:id="@+id/idTest"

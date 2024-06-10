@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        courseNameEdt = findViewById(R.id.idEdtCourseName);
-        courseTracksEdt = findViewById(R.id.idEdtCourseTracks);
-        courseDurationEdt = findViewById(R.id.idEdtCourseDuration);
+//        courseNameEdt = findViewById(R.id.idEdtCourseName);
+//        courseTracksEdt = findViewById(R.id.idEdtCourseTracks);
+//        courseDurationEdt = findViewById(R.id.idEdtCourseDuration);
         idTestEdit = findViewById(R.id.idTest);
-        courseDescriptionEdt = findViewById(R.id.idEdtCourseDescription);
+//        courseDescriptionEdt = findViewById(R.id.idEdtCourseDescription);
         addCourseBtn = findViewById(R.id.idBtnAddCourse);
         readCourseBtn = findViewById(R.id.idBtnReadCourse);
 
@@ -75,31 +75,34 @@ public class MainActivity extends AppCompatActivity {
         addCourseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LongModel longModel = new LongModel();
 
+                String model = "model";
                 // below line is to get data from all edit text fields.
-                String courseName = courseNameEdt.getText().toString();
-                String courseTracks = courseTracksEdt.getText().toString();
-                String courseDuration = courseDurationEdt.getText().toString();
+//                String courseName = model;
+//                String courseTracks = courseTracksEdt.getText().toString();
+//                String courseDuration = courseDurationEdt.getText().toString();
                 String courseTest = idTestEdit.getText().toString();
-                String courseDescription = courseDescriptionEdt.getText().toString();
+//                String courseDescription = courseDescriptionEdt.getText().toString();
 
                 // validating if the text fields are empty or not.
-                if (courseName.isEmpty() || courseTracks.isEmpty() || courseDuration.isEmpty() || courseDescription.isEmpty()) {
+                if (courseTest.isEmpty() ) {
                     Toast.makeText(MainActivity.this, "Please enter all the data..", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // on below line we are calling a method to add new
                 // course to sqlite data and pass all our values to it.
-                dbHandler.addNewCourse(courseName, courseDuration, courseDescription, courseTracks, courseTest);
+                dbHandler.addNewCourse(courseTest);
+                dbHandler.addNewCourse(courseTest);
 
                 // after adding the data we are displaying a toast message.
                 Toast.makeText(MainActivity.this, "Course has been added.", Toast.LENGTH_SHORT).show();
-                courseNameEdt.setText("");
-                courseDurationEdt.setText("");
-                courseTracksEdt.setText("");
+//                courseNameEdt.setText("");
+//                courseDurationEdt.setText("");
+//                courseTracksEdt.setText("");
                 idTestEdit.setText("");
-                courseDescriptionEdt.setText("");
+//                courseDescriptionEdt.setText("");
             }
         });
 

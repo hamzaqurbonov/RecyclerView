@@ -37,10 +37,10 @@ public class SqliteAdapter  extends RecyclerView.Adapter<SqliteAdapter.ViewHolde
         // on below line we are setting data
         // to our views of recycler view item.
         SqliteModel modal = courseModalArrayList.get(position);
-        holder.courseNameTV.setText(modal.getCourseName());
-        holder.courseDescTV.setText(modal.getCourseDescription());
-        holder.courseDurationTV.setText(modal.getCourseDuration());
-        holder.courseTracksTV.setText(modal.getCourseTracks());
+//        holder.courseNameTV.setText(modal.getCourseName());
+//        holder.courseDescTV.setText(modal.getCourseDescription());
+//        holder.courseDurationTV.setText(modal.getCourseDuration());
+//        holder.courseTracksTV.setText(modal.getCourseTracks());
         holder.courseIdTest.setText(modal.getCourseTest());
     }
 
@@ -58,10 +58,10 @@ public class SqliteAdapter  extends RecyclerView.Adapter<SqliteAdapter.ViewHolde
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views
-            courseNameTV = itemView.findViewById(R.id.idTVCourseName);
-            courseDescTV = itemView.findViewById(R.id.idTVCourseDescription);
-            courseDurationTV = itemView.findViewById(R.id.idTVCourseDuration);
-            courseTracksTV = itemView.findViewById(R.id.idTVCourseTracks);
+//            courseNameTV = itemView.findViewById(R.id.idTVCourseName);
+//            courseDescTV = itemView.findViewById(R.id.idTVCourseDescription);
+//            courseDurationTV = itemView.findViewById(R.id.idTVCourseDuration);
+//            courseTracksTV = itemView.findViewById(R.id.idTVCourseTracks);
             courseIdTest = itemView.findViewById(R.id.idTest);
         }
     }
