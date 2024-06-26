@@ -42,7 +42,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private EditText courseNameEdt, courseTracksEdt, courseDurationEdt, courseDescriptionEdt, idTestEdit;
-    private Button addCourseBtn, readCourseBtn;
+    private Button addCourseBtn, readCourseBtn, shareSend;
     private DBHandler dbHandler;
 
     static List<String> activityllist1 = new ArrayList<>();
@@ -69,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
 //        courseDescriptionEdt = findViewById(R.id.idEdtCourseDescription);
         addCourseBtn = findViewById(R.id.idBtnAddCourse);
         readCourseBtn = findViewById(R.id.idBtnReadCourse);
+
+        shareSend = findViewById(R.id.share_send);
+        shareSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, "Hello");
+                intent.setType("text/plain");
+                if(intent.resolveActivity(getPackageManager()) !=null){
+                    startActivity(intent);
+                }
+            }
+        });
+
+
 
         dbHandler = new DBHandler(MainActivity.this);
 

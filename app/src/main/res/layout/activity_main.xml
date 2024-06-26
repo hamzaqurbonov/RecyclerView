@@ -80,6 +80,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idBtnAddCourse" />
 
+    <Button
+        android:id="@+id/share_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="share_send"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idBtnAddCourse" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewId"
         android:layout_width="408dp"
