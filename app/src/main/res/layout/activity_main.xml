@@ -4,147 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
 
-    <!--edit text to enter course duration-->
+    <Spinner
+        android:id="@+id/spinner_young"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--edit text to display course tracks-->
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--edit text for course description-->
-
-
-<!--    <EditText-->
-<!--        android:id="@+id/idEdtCourseName"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:hint="Enter course Name"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
-<!--        tools:layout_editor_absoluteX="16dp" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/idEdtCourseDuration"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:hint="Enter Course Duration"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseName"-->
-<!--        tools:layout_editor_absoluteX="10dp" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/idEdtCourseTracks"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:hint="Enter Course Tracks"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/idEdtCourseDuration"-->
-<!--        tools:layout_editor_absoluteX="43dp" />-->
-
-    <EditText
-        android:id="@+id/idTest"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="idTest"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:layout_editor_absoluteX="54dp" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#125AEA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_young">
 
-<!--    <EditText-->
-<!--        android:id="@+id/idEdtCourseDescription"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:hint="Enter Course Description"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/idTest"-->
-<!--        tools:layout_editor_absoluteX="10dp" />-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_short_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="short url" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/idBtnAddCourse"
-        android:layout_width="match_parent"
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Course"
-        android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@+id/idTest"
-        tools:layout_editor_absoluteX="-16dp" />
-
-    <Button
-        android:id="@+id/idBtnReadCourse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Read All Courses"
-        android:textAllCaps="false"
+        android:layout_marginTop="30dp"
+        android:text="Қўшиш"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idBtnAddCourse" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_name_input" />
 
-    <Button
-        android:id="@+id/share_send"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="share_send"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idBtnAddCourse" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewId"
-        android:layout_width="408dp"
-        android:layout_height="156dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_item"
-
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <!--    <SearchView-->
-    <!--        android:id="@+id/searchtoolbar"-->
-    <!--        android:layout_width="409dp"-->
-    <!--        android:layout_height="27dp"-->
-    <!--        android:layout_marginBottom="40dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/recyclerviewId"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-
-    <!-- This is the parent RecyclerView-->
-    <!--    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView-->
-    <!--        android:id="@+id/youtube_player_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:enableAutomaticInitialization="false"-->
-
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--         />-->
-
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/parent_recyclerview"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

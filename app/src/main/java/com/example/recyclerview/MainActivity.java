@@ -15,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 //import android.widget.SearchView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
@@ -32,23 +34,35 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    public  static ArrayList<String> nextArrayList = new ArrayList<>();
-    String oldID;
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Map<String,Object> nestedData = new HashMap<>();
+    public List<String> activityllist = new ArrayList<>();
+    EditText edit_short_id;
+    Button add_button;
+    Spinner spinner, spinner_young ;
+    String DocName,youngNumber, videoId, url ;
+
+
 
 
     @Override
@@ -56,83 +70,142 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
-        nextArrayList();
+        spinner_young = findViewById(R.id.spinner_young);
+        spinner = findViewById(R.id.spinner);
+        edit_short_id = findViewById(R.id.edit_short_id);
+        add_button = findViewById(R.id.add_button);
+
+        Collection();
+        AddButton();
 
     }
 
-
-    private void nextArrayList() {
-        // Birinchi holati ishlaydi Arreyni shakillantirib beradi
-
-        db.collection("Shorts").orderBy("key").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void Collection() {
+        db.collection("Shorts").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        ArrayList<String> arrayMapList = (ArrayList<String>) document.get("key");
-                        for (Object transaction: arrayMapList) {
-                            Map values = (Map)transaction;
-                            nextArrayList.add((String) values.get("id"));
-                        }
-
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.d("demo28", "Error : " + e.getMessage());
+                }
+                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        Log.d("demo46", "users doc "  + doc.getDocument().getId());
+                        activityllist.add(doc.getDocument().getId());
 
                     }
-                    Log.d("demo47", "Fragment ID: " + nextArrayList);
-                    Collections.shuffle( nextArrayList);
-                } else {
+
                 }
+                Spinner();
+            }});
+    }
+
+
+    public void Spinner() {
+        // Массивни адаптерга юклаш
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),  android.R.layout.simple_spinner_item , activityllist);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // spinnerни техт каттароқ қилиш учун CustomSpinnerAdapter класси яратилди
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, activityllist, R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+        Log.d("demo46", "activityllist "  + activityllist);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Танланган элементни олиш
+                String selectedOption = parentView.getItemAtPosition(position).toString();
+                DocName = selectedOption;
+                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Хеч нарса танланмаса (ўрнатилган ҳолат)
             }
         });
-        Log.d("demo47", "Found: ");
-        db.collection("Shorts").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-//                            nextArrayList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // "key" массивини оламиз
-                                List<Map<String, Object>> keys = (List<Map<String, Object>>) document.get("key");
 
-                                // Массив ичидаги youngNumber бўйича фильтрлаш
-                                for (Map<String, Object> key : keys) {
-//                                    long youngNumber = (long) key.get("youngNumber"); // youngNumberни оламиз
+        // spinner_young ga tegishli
+        String[] spinner_young_list = {"2", "3", "4", "5"};
 
-//                                    if (youngNumber ==  2) { // youngNumber 0 дан катта бўлса
-//                                        Log.d("demo47", "Found: " + key.get("id")); // Мос келганларини логга чиқарамиз
-//                                    }
-                                    Object youngNumberObj = key.get("youngNumber");
-                                    if (youngNumberObj != null && !youngNumberObj.toString().isEmpty()) {
-                                        try {
-                                            // Агар youngNumber String бўлса, уни long га айлантирамиз
-                                            long youngNumber = Long.parseLong(youngNumberObj.toString());
+//        ArrayAdapter<String> adapter_young = new ArrayAdapter<>(getActivity(),  android.R.layout.simple_spinner_item , spinner_young_list);
+        CustomSpinnerAdapter adapter_young = new CustomSpinnerAdapter(MainActivity.this, Arrays.asList(spinner_young_list),  R.layout.spinner_number_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_young.setAdapter(adapter_young);
+        Log.d("demo46", "activityllist "  + activityllist);
+        spinner_young.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Танланган элементни олиш
+                String selectedOption = parentView.getItemAtPosition(position).toString();
+                youngNumber = selectedOption;
+                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
+            }
 
-                                            if (youngNumber == Integer.parseInt(oldID)) {
-
-                                                nextArrayList.add((String) key.get("id"));
-                                                Log.d("demo47", "Found: " + key.get("id"));
-                                            }
-                                        } catch (NumberFormatException e) {
-//                                            Log.e("demo47", "Маълумотни long га айлантиришда хато: " + youngNumberObj.toString());
-                                        }
-                                    } else {
-                                        Log.w("demo47", "youngNumber null ёки бўш, текширинг: " + key.toString());
-                                    }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Хеч нарса танланмаса (ўрнатилган ҳолат)
+            }
+        });
 
 
-                                }
-                            }
-                            Collections.shuffle( nextArrayList);
-                        } else {
-                            Log.w("demo47", "Маълумот олишда хато юз берди.", task.getException());
-                        }
-                    }
-                });
+
 
     }
 
-}
+
+    public void AddButton() {
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                // Киритилаётган Видео линки
+                url = edit_short_id.getText().toString();
+
+                // Линкни аниқлаш олиш учун
+                String url_app_longV = "https://youtu.be/";
+                String url_app_shorts = "https://youtube.com/shorts/";
+                String url_pk_longV = "https://www.youtube.com/watch?v=";
+                String url_pk_shorts = "https://www.youtube.com/shorts/";
+
+                // Линкни филтирлаш учун
+                if (url.startsWith(url_app_longV)) {
+                    videoId = url.substring(url.indexOf("/youtu.be/") + 10, url.indexOf("?"));
+                } else if (url.startsWith(url_app_shorts)) {
+                    videoId = url.substring(url.indexOf("/shorts/") + 8, url.indexOf("?"));
+                } else if (url.startsWith(url_pk_longV)) {
+
+                    videoId = url.substring(url.indexOf("v=") + 2, url.indexOf("&") == -1 ? url.length() : url.indexOf("&"));
+                    if (url.length() == url.indexOf("v=") + 2 + videoId.length()) {
+                        // IDдан кейин бошқа белгилар йўқ
+                        videoId = url.substring(url.indexOf("v=") + 2);
+                    } else {
+                        // IDдан кейин белгилар мавжуд
+                        videoId = url.substring(url.indexOf("v=") + 2, url.indexOf("&"));
+                    }
+                } else if (url.startsWith(url_pk_shorts)) {
+                    videoId = url.substring(url.lastIndexOf("/") + 1);
+                } else {
+                    Toast.makeText(MainActivity.this, "Фақат YouTube линкини киритиш зарур", Toast.LENGTH_SHORT).show();
+                    return; // Функцияни тугатади
+                }
+
+                // Map яратиш
+                nestedData.put("url", edit_short_id.getText().toString());
+                nestedData.put("id",   videoId);
+                nestedData.put("youngNumber", Integer.parseInt( youngNumber));
+
+                // arrey орқали сақлаш
+                DocumentReference Data = db.collection("Shorts").document(DocName);
+                Data.update("key", FieldValue.arrayUnion(nestedData));
+                edit_short_id.setText("");
+
+                Toast.makeText(MainActivity.this, "Видео сақланди " + DocName, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+    }
+
+
