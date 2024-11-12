@@ -20,8 +20,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
 //import androidx.appcompat.widget.SearchView;
@@ -29,6 +32,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,22 +61,29 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Map<String,Object> nestedData = new HashMap<>();
+    Map<String, Object> nestedData = new HashMap<>();
     public List<String> activityllist = new ArrayList<>();
-    EditText edit_short_id;
-    Button add_button, pasteButton;
-    Spinner spinner, spinner_young, spinnerDoc ;
-    String DocName, NameSubDoc, youngNumber, videoId, url ;
+    EditText edit_short_id, add_edit_document, add_edit_collection;
+    Button add_button, pasteButton, add_document_button, add_collection_button;
+    Spinner spinner, spinner_young, spinnerDoc, spinner_collection;
+    String DocName, NameSubDoc, youngNumber, videoId, url;
     private ArrayList<String> subDocList = new ArrayList<>();
     private ArrayList<String> activityList = new ArrayList<>();
+    SwipeRefreshLayout swipeRefreshLayout;
+    ImageView add_plus;
+    private boolean isFullscreen = false;
 
-
+    RelativeLayout relative;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        add_plus = findViewById(R.id.add_plus);
+        relative = findViewById(R.id.relative);
 
         spinner_young = findViewById(R.id.spinner_young);
         spinner = findViewById(R.id.spinner);
@@ -81,7 +92,120 @@ public class MainActivity extends AppCompatActivity {
         add_button = findViewById(R.id.add_button);
         pasteButton = findViewById(R.id.pasteButton);
 
+        // collection qo'shish
+        add_edit_collection = findViewById(R.id.add_edit_collection);
+        add_collection_button = findViewById(R.id.add_collection_button);
+        // document qo'shish
+        spinner_collection = findViewById(R.id.spinner_collection);
+        add_edit_document = findViewById(R.id.add_edit_document);
+        add_document_button = findViewById(R.id.add_document_button);
 
+        add_plus.setOnClickListener(view -> {
+            isFullscreen = !isFullscreen;
+            if (isFullscreen) {
+                relative.setVisibility(View.VISIBLE);
+            } else {
+                relative.setVisibility(View.GONE);
+            }
+        });
+//        swipeRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+//            // Ensure the child is not null before calling canScrollVertically
+//            if (swipeRefreshLayout.getChildCount() > 0 && swipeRefreshLayout.getChildAt(0) != null) {
+//                // Your refresh logic here
+//            }
+//        });
+
+
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                swipeRefreshLayout.setRefreshing(false);
+////                Collection();
+//            }
+//        });
+
+
+        Collection();
+        AddButton();
+        spinner_young();
+        pasteButton();
+        AddEditCollection();
+//        addDocumentButton();
+    }
+
+    private void addDocumentButton() {
+        CustomSpinnerAdapter adapterDoc = new CustomSpinnerAdapter(this, activityList, R.layout.spinner_item);
+        spinner_collection.setAdapter(adapterDoc);
+
+        spinner_collection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                DocName = parentView.getItemAtPosition(position).toString();
+                Toast.makeText(MainActivity.this, "Tanlangan: " + DocName, Toast.LENGTH_SHORT).show();
+
+                // Tabiat hujjatini asosida ichki kolleksiyani olamiz
+//                loadSubDocuments(DocName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing
+            }
+        });
+
+
+        add_document_button.setOnClickListener(view -> {
+
+            if (!add_edit_document.getText().toString().isEmpty()) {
+                Log.d("demo59", " ққққ " + DocName + " " + DocName + " " + add_edit_document.getText().toString());
+
+                db.collection("Shorts").document(DocName).collection(DocName).document(add_edit_document.getText().toString())
+                        .set(new HashMap<>())
+                        .addOnSuccessListener(aVoid -> {
+                            // Муваффақиятли амалга оширилди
+                            Log.d("Firestore", "Ҳужжат муваффақиятли яратилди");
+                        })
+                        .addOnFailureListener(e -> {
+                            // Хатолик содир бўлганда
+                            Log.w("Firestore", "Ҳужжатни яратишда хатолик юз берди", e);
+                        });
+                add_edit_document.setText("");
+                Collection();
+            } else {
+                Toast.makeText(MainActivity.this, "Майдонни тўлдиринг!", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+
+    private void AddEditCollection() {
+        add_collection_button.setOnClickListener(view -> {
+
+            if (!add_edit_collection.getText().toString().isEmpty()) {
+                Log.d("demo58", " ққққ " + add_edit_collection.getText().toString());
+
+                db.collection("Shorts").document(add_edit_collection.getText().toString())
+                        .set(new HashMap<>())
+                        .addOnSuccessListener(aVoid -> {
+                            // Муваффақиятли амалга оширилди
+                            Log.d("Firestore", "Ҳужжат муваффақиятли яратилди");
+                        })
+                        .addOnFailureListener(e -> {
+                            // Хатолик содир бўлганда
+                            Log.w("Firestore", "Ҳужжатни яратишда хатолик юз берди", e);
+                        });
+                add_edit_collection.setText("");
+                Collection();
+            } else {
+                Toast.makeText(MainActivity.this, "Майдонни тўлдиринг!", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+
+    private void pasteButton() {
         pasteButton.setOnClickListener(view -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClip() != null) {
@@ -94,15 +218,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 edit_short_id.setText("Буферда матн мавжуд эмас");
             }
+
         });
 
-
-
-
-
-        Collection();
-        AddButton();
-        spinner_young();
     }
 
 
@@ -123,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 setupDocSpinner();
+                addDocumentButton();
             }
         });
     }
@@ -212,8 +331,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void AddButton() {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,21 +370,19 @@ public class MainActivity extends AppCompatActivity {
 
                 // Map яратиш
                 nestedData.put("url", edit_short_id.getText().toString());
-                nestedData.put("id",   videoId);
-                nestedData.put("img",   "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg");
-                nestedData.put("youngNumber", Integer.parseInt( youngNumber));
+                nestedData.put("id", videoId);
+                nestedData.put("img", "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg");
+                nestedData.put("youngNumber", Integer.parseInt(youngNumber));
 
                 // arrey орқали сақлаш
-                DocumentReference Data = db.collection("Shorts").document(DocName).collection(DocName).document(DocName);
+                DocumentReference Data = db.collection("Shorts").document(DocName).collection(DocName).document(NameSubDoc);
                 Data.update("key", FieldValue.arrayUnion(nestedData));
                 edit_short_id.setText("");
-                Log.d("demo46", "DocName "  + DocName);
+                Log.d("demo46", "DocName " + DocName);
                 Toast.makeText(MainActivity.this, "Видео сақланди " + DocName, Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
 
 
 //    public void Spinner() {
@@ -334,7 +449,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //
 //    }
-
 
 
 }
