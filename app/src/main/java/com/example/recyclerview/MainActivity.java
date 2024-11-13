@@ -113,22 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 relative.setVisibility(View.GONE);
             }
         });
-//        swipeRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-//            // Ensure the child is not null before calling canScrollVertically
-//            if (swipeRefreshLayout.getChildCount() > 0 && swipeRefreshLayout.getChildAt(0) != null) {
-//                // Your refresh logic here
-//            }
-//        });
-
-
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                swipeRefreshLayout.setRefreshing(false);
-////                Collection();
-//            }
-//        });
-
 
         Collection();
         AddButton();
@@ -196,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 DocName = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(MainActivity.this, "Tanlangan: " + DocName, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Tanlangan: " + DocName, Toast.LENGTH_SHORT).show();
 
                 // Tabiat hujjatini asosida ichki kolleksiyani olamiz
 //                loadSubDocuments(DocName);
@@ -309,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 DocName = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(MainActivity.this, "Tanlangan: " + DocName, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Tanlangan: " + DocName, Toast.LENGTH_SHORT).show();
 
                 // Tabiat hujjatini asosida ichki kolleksiyani olamiz
                 loadSubDocuments(DocName);
@@ -352,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 NameSubDoc = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(MainActivity.this, "Tanlangan: " + NameSubDoc, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Tanlangan: " + NameSubDoc, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -364,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void spinner_young() {
         // spinner_young ga tegishli
-        String[] spinner_young_list = {"2", "3", "4", "5"};
+        String[] spinner_young_list = {"0", "2", "3", "4", "5"};
 
         CustomSpinnerAdapter adapter_young = new CustomSpinnerAdapter(MainActivity.this, Arrays.asList(spinner_young_list), R.layout.spinner_number_item);
         spinner_young.setAdapter(adapter_young);
@@ -372,10 +356,10 @@ public class MainActivity extends AppCompatActivity {
         spinner_young.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
                 // Танланган элементни олиш
                 String selectedOption = parentView.getItemAtPosition(position).toString();
                 youngNumber = selectedOption;
-                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -391,6 +375,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (youngNumber == "0") {
+                    Toast.makeText(MainActivity.this, "Ёшни танленг!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Киритилаётган Видео линки
                 url = edit_short_id.getText().toString();
@@ -438,72 +426,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    public void Spinner() {
-//
-//        // spinnerни техт каттароқ қилиш учун CustomSpinnerAdapter класси яратилди
-//        CustomSpinnerAdapter adapterDoc = new CustomSpinnerAdapter(this, activityllist, R.layout.spinner_item);
-//        spinnerDoc.setAdapter(adapterDoc);
-//        Log.d("demo46", "activityllist "  + activityllist);
-//        spinnerDoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                // Танланган элементни олиш
-//                String selectedOption = parentView.getItemAtPosition(position).toString();
-//                DocName = selectedOption;
-//                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Хеч нарса танланмаса (ўрнатилган ҳолат)
-//            }
-//        });
-//
-//        // spinnerни техт каттароқ қилиш учун CustomSpinnerAdapter класси яратилди
-//        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, activityllist, R.layout.spinner_item);
-//        spinner.setAdapter(adapter);
-//        Log.d("demo46", "activityllist "  + activityllist);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                // Танланган элементни олиш
-//                String selectedOption = parentView.getItemAtPosition(position).toString();
-//                NameSubDoc = selectedOption;
-//                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Хеч нарса танланмаса (ўрнатилган ҳолат)
-//            }
-//        });
-//
-//        // spinner_young ga tegishli
-//        String[] spinner_young_list = {"2", "3", "4", "5"};
-//
-////        ArrayAdapter<String> adapter_young = new ArrayAdapter<>(getActivity(),  android.R.layout.simple_spinner_item , spinner_young_list);
-//        CustomSpinnerAdapter adapter_young = new CustomSpinnerAdapter(MainActivity.this, Arrays.asList(spinner_young_list),  R.layout.spinner_number_item);
-////        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_young.setAdapter(adapter_young);
-//        Log.d("demo46", "activityllist "  + activityllist);
-//        spinner_young.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                // Танланган элементни олиш
-//                String selectedOption = parentView.getItemAtPosition(position).toString();
-//                youngNumber = selectedOption;
-//                Toast.makeText(MainActivity.this, "Tanlangan: " + selectedOption, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Хеч нарса танланмаса (ўрнатилган ҳолат)
-//            }
-//        });
-//
-//    }
 
 
 }
