@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -63,17 +64,19 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Map<String, Object> nestedData = new HashMap<>();
     public List<String> activityllist = new ArrayList<>();
-    EditText edit_short_id, add_edit_document, add_edit_collection;
-    Button add_button, pasteButton, add_document_button, add_collection_button;
+    EditText edit_short_id, add_edit_document, add_edit_collection, edit_DataSync_id;
+    Button add_button, pasteButton, add_document_button, add_collection_button, Button_DataSync;
     Spinner spinner, spinner_young, spinnerDoc, spinner_collection;
     String DocName, NameSubDoc, youngNumber, videoId, url;
     private ArrayList<String> subDocList = new ArrayList<>();
     private ArrayList<String> activityList = new ArrayList<>();
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageView add_plus;
+    ImageView add_plus, add_DataSync;
     private boolean isFullscreen = false;
+    private boolean isFullscreen2 = false;
 
-    RelativeLayout relative;
+    RelativeLayout relative, relative_DataSync;
+    TextView textView_DataSync;
 
 
     @Override
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         add_plus = findViewById(R.id.add_plus);
         relative = findViewById(R.id.relative);
+        relative_DataSync = findViewById(R.id.relative_DataSync);
 
         spinner_young = findViewById(R.id.spinner_young);
         spinner = findViewById(R.id.spinner);
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             isFullscreen = !isFullscreen;
             if (isFullscreen) {
                 relative.setVisibility(View.VISIBLE);
+                relative_DataSync.setVisibility(View.GONE);
             } else {
                 relative.setVisibility(View.GONE);
             }
@@ -130,7 +135,57 @@ public class MainActivity extends AppCompatActivity {
         spinner_young();
         pasteButton();
         AddEditCollection();
-//        addDocumentButton();
+        DataSync();
+    }
+
+
+    private void DataSync() {
+        add_DataSync = findViewById(R.id.add_DataSync);
+        textView_DataSync = findViewById(R.id.textView_DataSync);
+        Button_DataSync = findViewById(R.id.Button_DataSync);
+        edit_DataSync_id = findViewById(R.id.edit_DataSync_id);
+
+        add_DataSync.setOnClickListener(view -> {
+            isFullscreen2 = !isFullscreen2;
+            if (isFullscreen2) {
+                relative.setVisibility(View.GONE);
+                relative_DataSync.setVisibility(View.VISIBLE);
+            } else {
+                relative_DataSync.setVisibility(View.GONE);
+            }
+        });
+
+        db.collection("DataSync")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("demo47", document.getId() + " => " + document.getData() + "version " + document.getData().get("version"));
+
+                                String version = (String) document.getData().get("version");
+                                textView_DataSync.setText("Жорий версия " + version);
+                            }
+                        } else {
+                            Log.d("demo1", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        Button_DataSync.setOnClickListener(v -> {
+            if (!edit_DataSync_id.getText().toString().isEmpty()) {
+                DocumentReference Data = db.collection("DataSync").document("DataSync");
+                Data.update("version", edit_DataSync_id.getText().toString());
+
+                textView_DataSync.setText("Жорий версия " + edit_DataSync_id.getText().toString());
+                edit_DataSync_id.setText("");
+            } else {
+                Toast.makeText(MainActivity.this, "Майдонни тўлдиринг!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private void addDocumentButton() {
